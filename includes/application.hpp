@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "shader.hpp"
+#include "mat4.hpp"
 
 
 class Application {

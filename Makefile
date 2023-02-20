@@ -37,13 +37,13 @@ FRAMEWORK_INC = libraries/includes
 
 INC= $(INC_PATH)/*
 
-NAME_SRC= main.cpp application.cpp shader.cpp
+NAME_SRC= main.cpp application.cpp shader.cpp mat4.cpp
 			
 
 NAME_SRC_C= glad.c \
 
 NAME_SRC_LEN	= $(shell echo -n $(NAME_SRC) | wc -w)
-I				= 0
+I				= 
 
 OBJ_NAME		= $(NAME_SRC:.cpp=.o)
 

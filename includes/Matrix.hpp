@@ -3,6 +3,7 @@
 #include <iostream>
 #include <array>
 #include "Vector.hpp"
+#include <cstring>
 
 template <typename T, size_t H, size_t W>
 struct Matrix : public std::array<vec<T, W>, H>
@@ -140,10 +141,6 @@ std::ostream& operator<<(std::ostream& os, const Matrix<T, H, W>& matrix) {
     return (os);
 }
 
-typedef Matrix<float, 2, 2> mat2;
-typedef Matrix<float, 3, 3> mat3;
-typedef Matrix<float, 4, 4> mat4;
-
 template <typename T, size_t H, size_t W>
 Matrix<T, H, W> lerp(const Matrix<T, H, W>&u, const Matrix<T, H, W>&v, const float t) {
     Matrix<T, H, W> result;
@@ -151,5 +148,9 @@ Matrix<T, H, W> lerp(const Matrix<T, H, W>&u, const Matrix<T, H, W>&v, const flo
     result = u * (1 - t) + v * t;
     return (result);
 }
+
+typedef Matrix<float, 2, 2> mat2;
+typedef Matrix<float, 3, 3> mat3;
+typedef Matrix<float, 4, 4> mat4;
 
 #endif

@@ -13,7 +13,7 @@ struct vec : public std::array<T, W>
 {
         vec(void) {}
         vec(T value) {
-		    for (unsigned n = 0; n < W; ++n)
+		    for (size_t n = 0; n < W; ++n)
                 (*this)[n] = value;
         }
         vec(const vec & vec) {
@@ -24,13 +24,13 @@ struct vec : public std::array<T, W>
 		}
 
         vec &operator=(const std::array<T, W> & rhs) {
-		    for (unsigned n = 0; n < W; ++n)
+		    for (size_t n = 0; n < W; ++n)
                 (*this)[n] = rhs[n];
             return (*this);
         }
         
         vec &operator=(const vec& rhs) {
-		    for (unsigned n = 0; n < W; ++n)
+		    for (size_t n = 0; n < W; ++n)
                 (*this)[n] = rhs[n];
             return (*this);
         }
@@ -38,7 +38,7 @@ struct vec : public std::array<T, W>
         vec operator+(const vec& rhs) const {
             vec result(*this);
 
-		    for (unsigned n = 0; n < W; ++n)
+		    for (size_t n = 0; n < W; ++n)
 			    result[n] += rhs[n];
             return (result);
         }
@@ -46,7 +46,7 @@ struct vec : public std::array<T, W>
         vec operator-(const vec& rhs) const {
             vec result(*this);
 
-		    for (unsigned n = 0; n < W; ++n)
+		    for (size_t n = 0; n < W; ++n)
 			    result[n] -= rhs[n];
             return (result);
         }
@@ -54,7 +54,7 @@ struct vec : public std::array<T, W>
         vec operator*(const T rhs) const {
             vec result(*this);
 
-		    for (unsigned n = 0; n < W; ++n)
+		    for (size_t n = 0; n < W; ++n)
 			    result[n] *= rhs;
             return (result);
         }
@@ -62,7 +62,7 @@ struct vec : public std::array<T, W>
         vec operator/(const T rhs) const {
             vec result(*this);
 
-		    for (unsigned n = 0; n < W; ++n)
+		    for (size_t n = 0; n < W; ++n)
 			    result[n] /= rhs;
             return (result);
         }
@@ -71,7 +71,7 @@ struct vec : public std::array<T, W>
             T result;
             
             result = 0;
-            for (int n = 0; n < W; n++)
+            for (size_t n = 0; n < W; n++)
                 result += (*this)[n] * vec[n];
             return (result);
         }
@@ -80,7 +80,7 @@ struct vec : public std::array<T, W>
             float result;
 
             result = 0.0f;
-            for (int n = 0; n < W; n++)
+            for (size_t n = 0; n < W; n++)
                 result += vec_ABS((*this)[n]);
             return (result);
         }
@@ -89,7 +89,7 @@ struct vec : public std::array<T, W>
             float result;
 
             result = 0.0f;
-            for (int n = 0; n < W; n++)
+            for (size_t n = 0; n < W; n++)
                 result += (*this)[n] * (*this)[n];
             return (sqrt(result));
         }
@@ -98,7 +98,7 @@ struct vec : public std::array<T, W>
             float result;
 
             result = 0;
-            for (int n = 0; n < W; n++)
+            for (size_t n = 0; n < W; n++)
                 if (vec_ABS((*this)[n]) > result)
                     result = VECTOR_ABS((*this)[n]);
             return (result);
@@ -107,7 +107,7 @@ struct vec : public std::array<T, W>
         std::string to_string() {
             std::string result = "v = [";
             
-            for (int n = 0; n < W - 1; n++) {
+            for (size_t n = 0; n < W - 1; n++) {
                 result += std::to_string((*this)[n]) + ", ";
             }
             if (W)
@@ -118,7 +118,7 @@ struct vec : public std::array<T, W>
         
         void print(void) {std::cout << *this << std::endl;}
 
-        const size_t size() const { return W; };
+        size_t size() const { return W; };
         
         void operator+=(const vec & rhs) {*this = *this + rhs;};
         void operator-=(const vec & rhs) {*this = *this - rhs;};
@@ -129,7 +129,7 @@ struct vec : public std::array<T, W>
 template <typename T, size_t W>
 std::ostream& operator<<(std::ostream& os, const vec<T, W> &vec) {
     os << "v = [";
-    for (int n = 0; n < W - 1; n++) {
+    for (size_t n = 0; n < W - 1; n++) {
         os << vec[n] <<  ", ";
     }
     if (W)
