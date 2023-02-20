@@ -7,7 +7,7 @@
 #include<vector>
 #include<string>
 #include <cstring>
-#include "mat4.hpp"
+#include "Matrix.hpp"
 
 class Shader {
 public:

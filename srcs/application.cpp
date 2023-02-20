@@ -77,7 +77,9 @@ void Application::init() {
 
 
 void Application::start() {
+	mat4 matrice = mat4(-1);
     program.Activate();
+	program.setMat4("matrice", matrice);
 	glBindVertexArray(cube);
 	while(glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
 	{

@@ -51,7 +51,7 @@ OBJ_NAME_C		= $(NAME_SRC_C:.c=.o)
 
 OBJS = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME)) $(addprefix $(OBJ_PATH)/,$(OBJ_NAME_C))
 
-DEBUG_FLAG = -Wall -Wextra #-fsanitize=address
+DEBUG_FLAG = #-Wall -Wextra #-fsanitize=address
 
 OPTIMISATION_FLAG = -ofast #-fsanitize=address#-o3 #-ofast  pas d'interet pour l'instant
 
@@ -61,6 +61,7 @@ GPP			= g++ -std=c++11 $(OPTIMISATION_FLAG) $(DEBUG_FLAG)
 
 
 all: $(NAME)
+	@./human_gl
 
 $(NAME) : $(OBJS)
 	@$(GPP) $^ -o $@ $(FRAMEWORK)
