@@ -1,4 +1,4 @@
-#include "shader.h"
+#include "shader.hpp"
 
 #ifdef _WIN32
 #define STRDUP _strdup

@@ -4,9 +4,10 @@
 #include<glad/glad.h>
 #include<fstream>
 #include<iostream>
-#include<glm/gtc/type_ptr.hpp>
 #include<vector>
 #include<string>
+#include <cstring>
+#include "mat4.hpp"
 
 class Shader {
 public:
@@ -32,13 +33,11 @@ public:
         ID = 0;
     }
     
-    void setMat4(const char* name, const glm::mat4& matrix) {
+    void setMat4(const char* name, const mat4& matrix) {
         glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, &matrix[0][0]);
     }
-    void setMat4(const char* name, int numbers, const glm::mat4* matrix) {
-        glUniformMatrix4fv(glGetUniformLocation(ID, name), numbers, GL_FALSE, &matrix[0][0][0]);
-    }
-    void setVec3(const char* name, const glm::vec3& vector) {
+
+    void setVec3(const char* name, const vec3& vector) {
         glUniform3fv(glGetUniformLocation(ID, name), 1, &vector[0]);
     }
     void setVec3(const char* name, float x, float y, float z) {
