@@ -78,9 +78,6 @@ void Application::init() {
 
 void Application::start() {
     program.Activate();
-	std::cout << translate(vec3({0, 0, 3})) << std::endl;
-	std::cout << perspective(60.0f, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f) << std::endl;
-	std::cout << perspective(60.0f, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f) * translate(vec3({0, 0, -2.0})) << std::endl;
 	program.setMat4("matrice", perspective(60, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f) * translate(vec3({0, 0, -2.0f})));
 	glBindVertexArray(cube);
 	while(glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
