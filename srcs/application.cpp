@@ -9,7 +9,7 @@ Application::Application(){
 
 
 void Application::initCube() {
-static const GLfloat cube_strip[] = {
+	const GLfloat cube_strip[] = {
     -0.5f, 0.5f, 0.5f,     // Front-top-left
     0.5f, 0.5f, 0.5f,      // Front-top-right
     -0.5f, -0.5f, 0.5f,    // Front-bottom-left
@@ -78,7 +78,10 @@ void Application::init() {
 
 void Application::start() {
     program.Activate();
-	program.setMat4("matrice", mat4(1));
+	std::cout << translate(vec3({0, 0, 3})) << std::endl;
+	std::cout << perspective(60.0f, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f) << std::endl;
+	std::cout << perspective(60.0f, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f) * translate(vec3({0, 0, -2.0})) << std::endl;
+	program.setMat4("matrice", perspective(60, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f) * translate(vec3({0, 0, -2.0f})));
 	glBindVertexArray(cube);
 	while(glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
 	{

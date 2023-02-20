@@ -6,8 +6,8 @@ mat4    perspective(float fov, float ratio, float near, float far) {
 
     return mat4({   scale / ratio,  0,      0,      0
                     ,0,             scale,  0,      0
-                    ,0,             0,      -((far + near) / (far - near)),     -1
-                    ,0,             0,      -((2 * far * near) / (far - near)), 0 });
+                    ,0,             0,      -((far + near) / (far - near)),    -((2 * far * near) / (far - near)) 
+                    ,0,             0,      -1, 0 });
 }
 
 
@@ -32,16 +32,16 @@ mat4    rotate(const mat4& matrix, float angle, vec3 vector) {
 mat4 translate(const vec3& v) {
     mat4 result(1);
 
-    result[3][0] = v[0];
-    result[3][1] = v[1];
-    result[3][2] = v[2];
+    result[0][3] = v[0];
+    result[1][3] = v[1];
+    result[2][3] = v[2];
     return result;
 }
 
 mat4 translate(const mat4& m, const vec3& v) {
     mat4 result(m);
 
-    result[3] = m[0] * v[0] + m[1] * v[1] + m[2] * v[2] + m[3];
+    result *= translate(v);
     return result;
 }
 
