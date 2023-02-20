@@ -4,11 +4,12 @@
 Application::Application(){
     init();
     program.Load(vertexSrc, fragSrc);
+	initCube();
 }
 
 
 void Application::initCube() {
-	static const GLfloat cube_strip[] = {
+static const GLfloat cube_strip[] = {
     -0.5f, 0.5f, 0.5f,     // Front-top-left
     0.5f, 0.5f, 0.5f,      // Front-top-right
     -0.5f, -0.5f, 0.5f,    // Front-bottom-left
@@ -23,8 +24,7 @@ void Application::initCube() {
     0.5f, -0.5f, -0.5f,    // Back-bottom-right
     -0.5f, 0.5f, -0.5f,    // Back-top-left
     0.5f, 0.5f, -0.5f      // Back-top-right
-	};
-
+};
 
 	glGenVertexArrays(1, &cube);
     glBindVertexArray(cube);
@@ -32,11 +32,11 @@ void Application::initCube() {
 	GLuint VBO;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cube_strip), &cube_strip, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(cube_strip), cube_strip, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 14, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 3, 0);
-    glBindVertexArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glBindVertexArray(0);
 }
 
 void Application::init() {
@@ -77,17 +77,15 @@ void Application::init() {
 
 
 void Application::start() {
-	mat4 matrice = mat4(-1);
     program.Activate();
-	program.setMat4("matrice", matrice);
+	program.setMat4("matrice", mat4(1));
 	glBindVertexArray(cube);
 	while(glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
 	{
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 14);
-
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 14);	
 
 		glfwSwapBuffers(window);
 	}
