@@ -23,16 +23,16 @@ void Skeleton::BuildSkeleton() {
 }
 
 void Skeleton::ComputeOffset() {
-    bones[HEAD].WithOffset(vec3({0, 4, 0})).ComputeOffsetMatrix();
-    bones[TORSO].WithOffset(vec3({0, 0, 0})).ComputeOffsetMatrix();
+    bones[HEAD].WithOffset(vec3({0, 6.5f, 0})).ComputeOffsetMatrix();
+    bones[TORSO].WithOffset(vec3({0, 1.5f, 0})).ComputeOffsetMatrix();
     bones[L_H_ARM].WithOffset(vec3({-1.5, 3, 0})).ComputeOffsetMatrix();
     bones[R_H_ARM].WithOffset(vec3({1.5, 3, 0})).ComputeOffsetMatrix();
-    bones[L_L_ARM].WithOffset(vec3({0, 3, 0})).ComputeOffsetMatrix();
-    bones[R_L_ARM].WithOffset(vec3({0, 3, 0})).ComputeOffsetMatrix();
-    bones[L_H_LEG].WithOffset(vec3({0, 3, 0})).ComputeOffsetMatrix();
-    bones[R_H_LEG].WithOffset(vec3({0, 3, 0})).ComputeOffsetMatrix();
-    bones[L_L_LEG].WithOffset(vec3({0, 3, 0})).ComputeOffsetMatrix();
-    bones[R_L_LEG].WithOffset(vec3({0, 3, 0})).ComputeOffsetMatrix();
+    bones[L_L_ARM].WithOffset(vec3({0, 0, 0})).ComputeOffsetMatrix();
+    bones[R_L_ARM].WithOffset(vec3({0, 0, 0})).ComputeOffsetMatrix();
+    bones[L_H_LEG].WithOffset(vec3({-1.5, 1.5, 0})).ComputeOffsetMatrix();
+    bones[R_H_LEG].WithOffset(vec3({1.5, 1.5, 0})).ComputeOffsetMatrix();
+    bones[L_L_LEG].WithOffset(vec3({0, 0, 0})).ComputeOffsetMatrix();
+    bones[R_L_LEG].WithOffset(vec3({0, 0, 0})).ComputeOffsetMatrix();
 }
 
 Skeleton::Skeleton() {
