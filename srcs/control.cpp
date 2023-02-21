@@ -18,6 +18,16 @@ void Control::window_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void Control::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    static Control *control = (Control*)glfwGetWindowUserPointer(window);
+    if (key == GLFW_KEY_LEFT_ALT) {
+        if (action == GLFW_PRESS) {
+            control->pause = true;
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        } else {
+            control->pause = false;
+        	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
+    }
 }
 
 void Control::getKeyboardEvent(GLFWwindow* window) {
@@ -27,6 +37,8 @@ void Control::getKeyboardEvent(GLFWwindow* window) {
 
     float time = (float)glfwGetTime();
     float sensibility = (time - previousTime) * 4;
+
+    if (pause) sensibility = 0;
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         position += look * sensibility;
@@ -47,8 +59,14 @@ void Control::getKeyboardEvent(GLFWwindow* window) {
 
 void Control::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
 	static Control *control = (Control*)glfwGetWindowUserPointer(window);
-
 	static vec2 mousePos = vec2(0);
+
+    if (control->pause) {
+        mousePos[0] = xpos;
+        mousePos[1] = ypos;
+        return ;
+    }
+
 	static float Pitch = -45.0f;
 	static float Yaw = 10.0f;
 

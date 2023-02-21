@@ -10,6 +10,7 @@ class Control {
     public:
         vec3 look;
         vec3 position;
+        bool pause = false;
 
     void init(GLFWwindow *window);
     void getKeyboardEvent(GLFWwindow* window);

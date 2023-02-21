@@ -11,12 +11,14 @@ class CubeMap {
         GLuint cubeMapTextureId;
         GLuint skybox;
 
+        void genTexture();
+        void loadTexture(const char **fileNames);
+
     public:
         CubeMap();
         void init(mat4 perspective, mat4 lookAt);
-        void genTexture();
-        void loadTexture(const char **fileNames);
         void draw();
+
         void setView(mat4 lookAt4);
         void setPerspective(mat4 perspective4);
 };
