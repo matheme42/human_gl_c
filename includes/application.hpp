@@ -10,28 +10,24 @@
 #include "mat4.hpp"
 #include "control.hpp"
 #include "object.hpp"
+#include "cubemap.hpp"
 
 class Application {
 
     #define WINDOWS_X 1600
     #define WINDOWS_Y 900
 
-    #define fragSrc "shader/fs.glsl"
-    #define vertexSrc "shader/vs.glsl"
-
-
     private:
         GLFWwindow  *window;
         Control     control;
-        Shader      program;
         Object      object;
+        CubeMap     cubemap;
 
         void init();
-        void initCube();
+        void configure();
+        void start();
     public:
         Application();
-
-        void start();
 };
 
 #endif

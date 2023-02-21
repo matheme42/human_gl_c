@@ -1,6 +1,6 @@
 #include "control.hpp"
 
-void Control::init() {
+void Control::init(GLFWwindow *window) {
 	glfwSetWindowUserPointer(window, this);
     glfwSetWindowSizeCallback(window, window_size_callback);
 	glfwSetKeyCallback(window, key_callback);
@@ -10,22 +10,17 @@ void Control::init() {
     position = vec3({0, 0, 0});
 }
 
-void Control::setVarialbe(GLFWwindow  *window, Shader *shader) {
-	this->window = window;
-	this->program = shader;
-}
-
 void Control::window_size_callback(GLFWwindow* window, int width, int height) {
 	static Control *control = (Control*)glfwGetWindowUserPointer(window);
 	glfwGetFramebufferSize(window, &width, &height);
-	control->program->setMat4("P", perspective(60, (float)width / (float)height, 0.1f, 100.0f));
+    control->onPerspectiveChange(perspective(60, (float)width / (float)height, 0.1f, 100.0f));
 	glViewport(0, 0, width, height);
 }
 
 void Control::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 }
 
-void Control::getKeyboardEvent() {
+void Control::getKeyboardEvent(GLFWwindow* window) {
     static float previousTime = 0.0f;
     
     #define KEYBOARD_EVENT_REFRESH 1.0f / 60.0f
@@ -46,8 +41,7 @@ void Control::getKeyboardEvent() {
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
         position[1] += -1.0f * sensibility;
     
-    program->Activate();
-	program->setMat4("V", lookAt(position, position + look, vec3({0, 1, 0})));
+    onViewChange(lookAt(position, position + look, vec3({0, 1, 0})));
     previousTime = time;
 }
 
@@ -74,8 +68,7 @@ void Control::cursor_position_callback(GLFWwindow* window, double xpos, double y
     mousePos[0] = xpos;
     mousePos[1] = ypos;
 
-    control->program->Activate();
-	control->program->setMat4("V", lookAt(control->position, control->position + control->look, vec3({0, 1, 0})));
+    control->onViewChange(lookAt(control->position, control->position + control->look, vec3({0, 1, 0})));
 }
 
 void Control::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {

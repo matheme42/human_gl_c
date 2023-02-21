@@ -3,17 +3,28 @@
 
 Application::Application(){
     init();
-    program.Load(vertexSrc, fragSrc);
+	configure();
+	start();
+}
 
+void Application::configure() {
+	mat4 perspective4 = perspective(60, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f);
+	mat4 lookAt4 = lookAt(vec3({0, 2, -10}), vec3({0, 0, 0}), vec3({0, 1, 0}));
 
-	control.setVarialbe(window, &program);
-	control.init();
+	control.init(window);
 
-	object.init(&program);
+	control.onPerspectiveChange = ([&](mat4 perspective4){
+		object.setPerspective(perspective4);
+		cubemap.setPerspective(perspective4);
+	});
 
-	program.Activate();
-	program.setMat4("P", perspective(60, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f));
-	program.setMat4("V", lookAt(vec3({0, 2, -10}), vec3({0, 0, 0}), vec3({0, 1, 0})));
+	control.onViewChange = ([&](mat4 view) {
+		object.setView(view);
+		cubemap.setView(view);
+	});
+
+	object.init(perspective4, lookAt4);
+	cubemap.init(perspective4, lookAt4);
 }
 
 void Application::init() {
@@ -56,8 +67,8 @@ void Application::start() {
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glfwPollEvents();
-		control.getKeyboardEvent();
-		
+		control.getKeyboardEvent(window);
+		cubemap.draw();
 		object.draw();
 		object.rotation();
 		glfwSwapBuffers(window);

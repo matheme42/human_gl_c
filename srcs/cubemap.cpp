@@ -1,12 +1,9 @@
 #include "cubemap.hpp"
 
 
-CubeMap::CubeMap() {
-    initSkybox();
-    program.Load("shaders/skyBoxVS.glsl", "shaders/skyBoxFS.glsl");
-}
+CubeMap::CubeMap() {}
 
-void CubeMap::gen() {
+void CubeMap::genTexture() {
     glActiveTexture(GL_TEXTURE0 + 0);
     glGenTextures(1, &cubeMapTextureId);
     glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapTextureId);
@@ -16,6 +13,7 @@ void CubeMap::gen() {
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 }
+
 
 void CubeMap::loadTexture(const char **fileNames) {
     void* data;
@@ -35,7 +33,7 @@ void CubeMap::loadTexture(const char **fileNames) {
 }
 
 
-void CubeMap::initSkybox() {
+void CubeMap::init(mat4 perspective, mat4 lookAt) {
     const char** texturesName;
 
     float skyboxVertices[] =
@@ -91,11 +89,68 @@ void CubeMap::initSkybox() {
     texturesName = new const char* [6];
     texturesName[0] = "textures/skybox/left.png";
     texturesName[1] = "textures/skybox/right.png";
-    texturesName[2] = "textures/skybox/up.ng";
+    texturesName[2] = "textures/skybox/up.png";
     texturesName[3] = "textures/skybox/down.png";
     texturesName[4] = "textures/skybox/front.png";
     texturesName[5] = "textures/skybox/back.png";
-    gen();
+    genTexture();
     loadTexture(texturesName);
     delete[] texturesName;
+
+    glGenVertexArrays(1, &skybox);
+
+    glBindVertexArray(skybox);
+
+    /// skyboxEBO Init
+    GLuint ebo;
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
+
+
+    GLuint VBO;
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+
+    GLuint VBO2;
+    glGenBuffers(1, &VBO2);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO2);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texturesUv), texturesUv, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+
+    glBindVertexArray(0);
+
+    program.Load("shader/skyBoxVS.glsl", "shader/skyBoxFS.glsl");
+
+    program.Activate();
+
+    program.setInt("skybox", 0);
+	program.setMat4("projection", perspective);
+	program.setMat4("view", mat4(1));
+}
+
+
+void CubeMap::setView(mat4 lookAt4) {
+    program.Activate();
+    program.setMat4("view", lookAt4);
+}
+
+void CubeMap::setPerspective(mat4 perspective4) {
+    program.Activate();
+    program.setMat4("projection", perspective4);
+}
+
+
+void CubeMap::draw() {
+    glDepthFunc(GL_LEQUAL);
+    program.Activate();
+
+    glBindVertexArray(skybox);
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+    glDepthFunc(GL_LESS);
 }

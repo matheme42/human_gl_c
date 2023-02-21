@@ -1,6 +1,6 @@
 #include "object.hpp"
 
-void Object::init(Shader *program) {
+void Object::init(mat4 perspective, mat4 lookAt) {
 	const GLfloat cube_strip[] = {
     -0.5f, 0.5f, 0.5f,     // Front-top-left
     0.5f, 0.5f, 0.5f,      // Front-top-right
@@ -17,8 +17,8 @@ void Object::init(Shader *program) {
     -0.5f, 0.5f, -0.5f,    // Back-top-left
     0.5f, 0.5f, -0.5f      // Back-top-right
 };
-    this->program = program;
 
+    program.Load(vertexSrc, fragSrc);
 
 	glGenVertexArrays(1, &cube);
     glBindVertexArray(cube);
@@ -32,23 +32,36 @@ void Object::init(Shader *program) {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glBindVertexArray(0);
 
-    program->Activate();
-    program->setMat4("M", translate(vec3({0, 0, 5.0f})) * rotate(mat4(1), rot, vec3({0, 1, 0})));
+    program.Activate();
+    program.setMat4("P", perspective);
+	program.setMat4("V", lookAt);
+    program.setMat4("M", translate(vec3({0, 0, 5.0f})) * rotate(mat4(1), rot, vec3({0, 1, 0})));
 }
 
 void Object::rotation() {
     rot += 0.02f;
-    program->Activate();
-    program->setMat4("M", translate(vec3({0, 0, 5.0f})) * rotate(mat4(1), rot, vec3({0, 1, 0})));
+    program.Activate();
+    program.setMat4("M", translate(vec3({0, 0, 5.0f})) * rotate(mat4(1), rot, vec3({0, 1, 0})));
+}
+
+void Object::setView(mat4 lookAt4) {
+    program.Activate();
+    program.setMat4("V", lookAt4);
+}
+
+void Object::setPerspective(mat4 perspective4) {
+    program.Activate();
+    program.setMat4("P", perspective4);
 }
 
 
+
 void Object::draw() {
-    program->Activate();
+    program.Activate();
     glBindVertexArray(cube);
 
     for (unsigned n = 0; n < BONE_NUMDER; n++) {
-        program->setMat4("M",  translate(vec3({0, 0, 5.0f})) * rotate(mat4(1), rot, vec3({0, 1, 0})) * skeleton.GetBone(n).offsetM);
+        program.setMat4("M",  translate(vec3({0, 0, 5.0f})) * rotate(mat4(1), rot, vec3({0, 1, 0})) * skeleton.GetBone(n).offsetM);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 14);	
     }
 }
