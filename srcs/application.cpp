@@ -77,13 +77,14 @@ void Application::init() {
 
 
 void Application::start() {
-	mat4 P, M, R;
+	mat4 P, M, R, V;
 
 	float ok = 10.0f;
 	P = perspective(60, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f);
 	M = translate(vec3({0, 0, -2.0f}));
 
 //	std::cout << lookAt(vec3({0, 0, 0}), vec3({0, 1, 0}), vec3({0, 1, 0})) << std::endl;
+	V = lookAt(vec3({0, 2, -10}), vec3({0, -0.2f, 1}), vec3({0, 1, 0}));
     program.Activate();
 //	program.setMat4("matrice", P * M);
 	glBindVertexArray(cube);
@@ -92,7 +93,7 @@ void Application::start() {
 	{
 		R = rotate(mat4(1), 10 + ok, vec3({0, 1, 0}));
 		glfwPollEvents();
-		program.setMat4("matrice", P * M * R);
+		program.setMat4("matrice", P * V * M * R);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 14);	
