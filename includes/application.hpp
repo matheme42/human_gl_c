@@ -6,6 +6,7 @@
 #include "shader.hpp"
 #include "mat4.hpp"
 #include "control.hpp"
+#include "skeleton.hpp"
 
 class Application {
 
@@ -21,6 +22,7 @@ class Application {
         Control     control;
         Shader      program;
         GLuint      cube;
+        Skeleton    skeleton;
 
         void init();
         void initCube();

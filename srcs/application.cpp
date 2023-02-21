@@ -95,10 +95,14 @@ void Application::start() {
 	{
 		R = rotate(mat4(1), 10 + ok, vec3({0, 1, 0}));
 		glfwPollEvents();
-		program.setMat4("matrice", P * V * M * R);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 14);	
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		for (unsigned n = 0; n < BONE_NUMDER; n++) {
+			program.setMat4("matrice", P * V * skeleton.GetBone(n).offsetM);
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, 14);	
+		}
+
+		
 		ok += 0.02f;
 		glfwSwapBuffers(window);
 	}
