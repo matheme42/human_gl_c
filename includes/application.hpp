@@ -1,3 +1,6 @@
+#ifndef APPLICATION_HPP
+#define APPLICATION_HPP
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -6,7 +9,7 @@
 #include "shader.hpp"
 #include "mat4.hpp"
 #include "control.hpp"
-#include "skeleton.hpp"
+#include "object.hpp"
 
 class Application {
 
@@ -21,8 +24,7 @@ class Application {
         GLFWwindow  *window;
         Control     control;
         Shader      program;
-        GLuint      cube;
-        Skeleton    skeleton;
+        Object      object;
 
         void init();
         void initCube();
@@ -31,3 +33,5 @@ class Application {
 
         void start();
 };
+
+#endif

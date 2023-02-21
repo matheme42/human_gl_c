@@ -15,6 +15,7 @@ class Control {
 
     void setVarialbe(GLFWwindow  *window, Shader *shader);
     void init();
+    void getKeyboardEvent();
 
     private:
     static void window_size_callback(GLFWwindow* window, int width, int height);

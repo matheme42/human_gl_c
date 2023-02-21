@@ -4,41 +4,16 @@
 Application::Application(){
     init();
     program.Load(vertexSrc, fragSrc);
+
+
 	control.setVarialbe(window, &program);
 	control.init();
-	initCube();
-}
 
+	object.init(&program);
 
-void Application::initCube() {
-	const GLfloat cube_strip[] = {
-    -0.5f, 0.5f, 0.5f,     // Front-top-left
-    0.5f, 0.5f, 0.5f,      // Front-top-right
-    -0.5f, -0.5f, 0.5f,    // Front-bottom-left
-    0.5f, -0.5f, 0.5f,     // Front-bottom-right
-    0.5f, -0.5f, -0.5f,    // Back-bottom-right
-    0.5f, 0.5f, 0.5f,      // Front-top-right
-    0.5f, 0.5f, -0.5f,     // Back-top-right
-    -0.5f, 0.5f, 0.5f,     // Front-top-left
-    -0.5f, 0.5f, -0.5f,    // Back-top-left
-    -0.5f, -0.5f, 0.5f,    // Front-bottom-left
-    -0.5f, -0.5f, -0.5f,   // Back-bottom-left
-    0.5f, -0.5f, -0.5f,    // Back-bottom-right
-    -0.5f, 0.5f, -0.5f,    // Back-top-left
-    0.5f, 0.5f, -0.5f      // Back-top-right
-};
-
-	glGenVertexArrays(1, &cube);
-    glBindVertexArray(cube);
-
-	GLuint VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cube_strip), cube_strip, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glBindVertexArray(0);
+	program.Activate();
+	program.setMat4("P", perspective(60, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f));
+	program.setMat4("V", lookAt(vec3({0, 2, -10}), vec3({0, 0, 0}), vec3({0, 1, 0})));
 }
 
 void Application::init() {
@@ -70,40 +45,21 @@ void Application::init() {
 
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glEnable(GL_DEPTH_TEST);
-
-
-
 }
 
 
 void Application::start() {
-	mat4 P, M, R, V;
-
-	float ok = 10.0f;
-	P = perspective(60, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f);
-	M = translate(vec3({0, 0, -2.0f}));
-
-//	std::cout << lookAt(vec3({0, 0, 0}), vec3({0, 1, 0}), vec3({0, 1, 0})) << std::endl;
-	V = lookAt(vec3({0, 2, -10}), vec3({0, -0.2f, 1}), vec3({0, 1, 0}));
-    program.Activate();
-//	program.setMat4("matrice", P * M);
-	glBindVertexArray(cube);
 	glfwSwapInterval(0);
 	while(glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
 	{
-		R = rotate(mat4(1), 10 + ok, vec3({0, 1, 0}));
-		glfwPollEvents();
-
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		for (unsigned n = 0; n < BONE_NUMDER; n++) {
-			program.setMat4("matrice", P * V * skeleton.GetBone(n).offsetM);
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, 14);	
-		}
-
+		glfwPollEvents();
+		control.getKeyboardEvent();
 		
-		ok += 0.02f;
+		object.draw();
+		object.rotation();
 		glfwSwapBuffers(window);
 	}
 }

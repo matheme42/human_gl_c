@@ -6,6 +6,8 @@ void Control::init() {
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetCursorPosCallback(window, cursor_position_callback);
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
+	look = vec3({0, 0, 1});
+    position = vec3({0, 0, 0});
 }
 
 void Control::setVarialbe(GLFWwindow  *window, Shader *shader) {
@@ -14,18 +16,66 @@ void Control::setVarialbe(GLFWwindow  *window, Shader *shader) {
 }
 
 void Control::window_size_callback(GLFWwindow* window, int width, int height) {
-	Control *control = (Control*)glfwGetWindowUserPointer(window);
-	std::cout << width << " " << height << std::endl;
-	control->program->setMat4("matrice", perspective(60, (float)width / (float)height, 0.1f, 100.0f) * translate(vec3({0, 0, -2.0f})));
-	//std::cout <<  perspective(60, (float)width / (float)height, 0.1f, 100.0f) << std::endl;
+	static Control *control = (Control*)glfwGetWindowUserPointer(window);
+	glfwGetFramebufferSize(window, &width, &height);
+	control->program->setMat4("P", perspective(60, (float)width / (float)height, 0.1f, 100.0f));
+	glViewport(0, 0, width, height);
 }
 
 void Control::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+}
 
+void Control::getKeyboardEvent() {
+    static float previousTime = 0.0f;
+    
+    #define KEYBOARD_EVENT_REFRESH 1.0f / 60.0f
+
+    float time = (float)glfwGetTime();
+    float sensibility = (time - previousTime) * 4;
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        position += look * sensibility;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        position += normalize(cross_product(look, vec3({0.0f, 1.0f, 0.0f}))) * -1 * sensibility;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        position += look * -1 * sensibility;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        position += normalize(cross_product(look, vec3({0.0f, 1.0f, 0.0f}))) * sensibility;
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        position[1] += 1.0f * sensibility;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        position[1] += -1.0f * sensibility;
+    
+    program->Activate();
+	program->setMat4("V", lookAt(position, position + look, vec3({0, 1, 0})));
+    previousTime = time;
 }
 
 void Control::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
+	static Control *control = (Control*)glfwGetWindowUserPointer(window);
 
+	static vec2 mousePos = vec2(0);
+	static float Pitch = -45.0f;
+	static float Yaw = 10.0f;
+
+	Pitch += (float)(ypos - mousePos[1]) * 0.1;
+    Yaw += (float)(xpos - mousePos[0]) * 0.1;
+    if (Pitch > 89.0f)
+        Pitch = 89.0f;
+    if (Pitch < -89.0f)
+       Pitch = -89.0f;
+
+    vec3 front;
+    front[0] = cos(RADIAN(Yaw)) * cos(RADIAN(Pitch));
+    front[1] = -sin(RADIAN(Pitch));
+    front[2] = sin(RADIAN(Yaw)) * cos(RADIAN(Pitch));
+
+    control->look = normalize(front);
+    mousePos[0] = xpos;
+    mousePos[1] = ypos;
+
+    control->program->Activate();
+	control->program->setMat4("V", lookAt(control->position, control->position + control->look, vec3({0, 1, 0})));
 }
 
 void Control::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
