@@ -65,9 +65,9 @@ mat4    lookAt(const vec3& from, const vec3& to, const vec3& upvector ) {
     const vec3 right   = normalize(cross_product(upvector, forward));
     const vec3 up      = cross_product(forward, right);
     return mat4({
-                 right[0],          up[0],          forward[0], 0,
-                 right[1],          up[1],          forward[1], 0,
-                 right[2],          up[2],          forward[2], 0,
-                -right.dot(from),  -up.dot(from),  -forward.dot(from), 1
+                right[0],       right[1],       right[2],   -right.dot(from),
+                up[0],          up[1],          up[2],      -up.dot(from),
+                forward[0],     forward[1],     forward[2], -forward.dot(from),
+                0,              0,              0,          1
     });
 }

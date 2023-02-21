@@ -77,16 +77,26 @@ void Application::init() {
 
 
 void Application::start() {
+	mat4 P, M, R;
+
+	float ok = 10.0f;
+	P = perspective(60, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f);
+	M = translate(vec3({0, 0, -2.0f}));
+
+//	std::cout << lookAt(vec3({0, 0, 0}), vec3({0, 1, 0}), vec3({0, 1, 0})) << std::endl;
     program.Activate();
-	program.setMat4("matrice", perspective(60, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f) * translate(vec3({0, 0, -2.0f})));
+//	program.setMat4("matrice", P * M);
 	glBindVertexArray(cube);
+	glfwSwapInterval(0);
 	while(glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
 	{
+		R = rotate(mat4(1), 10 + ok, vec3({0, 1, 0}));
 		glfwPollEvents();
+		program.setMat4("matrice", P * M * R);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 14);	
-
+		ok += 0.02f;
 		glfwSwapBuffers(window);
 	}
 }
