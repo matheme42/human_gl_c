@@ -18,7 +18,7 @@ class Bone
     mat4 offsetM;
 
     Bone &ComputeOffsetMatrix() {
-        offsetM = translate(scale(Scale), offset);
+        offsetM = translate(offset) * scale(Scale);
         return (*this);
     }
 

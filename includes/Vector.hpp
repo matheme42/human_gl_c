@@ -59,6 +59,14 @@ struct vec : public std::array<T, W>
             return (result);
         }
 
+        vec operator*(const vec& rhs) const {
+            vec result(*this);
+
+		    for (size_t n = 0; n < W; ++n)
+			    result[n] *= rhs[n];
+            return (result);
+        }
+
         vec operator/(const T rhs) const {
             vec result(*this);
 

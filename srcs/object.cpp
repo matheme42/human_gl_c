@@ -4,16 +4,16 @@ void Object::init(mat4 perspective, mat4 lookAt) {
 	const GLfloat cube_strip[] = {
     -0.5f, 0.5f, 0.5f,     // Front-top-left
     0.5f, 0.5f, 0.5f,      // Front-top-right
-    -0.5f, -0.5f, 0.5f,    // Front-bottom-left
-    0.5f, -0.5f, 0.5f,     // Front-bottom-right
-    0.5f, -0.5f, -0.5f,    // Back-bottom-right
+    -0.5f, 0.0f, 0.5f,    // Front-bottom-left
+    0.5f, 0.0f, 0.5f,     // Front-bottom-right
+    0.5f, 0.0f, -0.5f,    // Back-bottom-right
     0.5f, 0.5f, 0.5f,      // Front-top-right
     0.5f, 0.5f, -0.5f,     // Back-top-right
     -0.5f, 0.5f, 0.5f,     // Front-top-left
     -0.5f, 0.5f, -0.5f,    // Back-top-left
-    -0.5f, -0.5f, 0.5f,    // Front-bottom-left
-    -0.5f, -0.5f, -0.5f,   // Back-bottom-left
-    0.5f, -0.5f, -0.5f,    // Back-bottom-right
+    -0.5f, 0.0f, 0.5f,    // Front-bottom-left
+    -0.5f, 0.0f, -0.5f,   // Back-bottom-left
+    0.5f, 0.0f, -0.5f,    // Back-bottom-right
     -0.5f, 0.5f, -0.5f,    // Back-top-left
     0.5f, 0.5f, -0.5f      // Back-top-right
 };
