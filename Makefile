@@ -37,7 +37,7 @@ FRAMEWORK_INC = libraries/includes
 
 INC= $(INC_PATH)/*
 
-NAME_SRC= main.cpp application.cpp shader.cpp mat4.cpp
+NAME_SRC= main.cpp application.cpp shader.cpp mat4.cpp control.cpp
 			
 
 NAME_SRC_C= glad.c \

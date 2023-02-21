@@ -4,10 +4,12 @@
 mat4    perspective(float fov, float ratio, float near, float far) {
     float   scale = 1.0f / tanf(RADIAN(fov / 2.0f));
 
-    return mat4({   scale / ratio,  0,      0,      0
-                    ,0,             scale,  0,      0
-                    ,0,             0,      -((far + near) / (far - near)),    -((2 * far * near) / (far - near)) 
-                    ,0,             0,      -1, 0 });
+    return mat4({
+        scale / ratio, 0,      0,                               0,
+        0,             scale,  0,                               0,
+        0,             0,      -((far + near) / (far - near)),  -((2 * far * near) / (far - near)),
+        0,             0,      -1,                              0
+    });
 }
 
 

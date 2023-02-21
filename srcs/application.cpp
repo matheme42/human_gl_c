@@ -4,6 +4,8 @@
 Application::Application(){
     init();
     program.Load(vertexSrc, fragSrc);
+	control.setVarialbe(window, &program);
+	control.init();
 	initCube();
 }
 

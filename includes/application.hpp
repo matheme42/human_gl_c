@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 #include "shader.hpp"
 #include "mat4.hpp"
-
+#include "control.hpp"
 
 class Application {
 
@@ -18,6 +18,7 @@ class Application {
 
     private:
         GLFWwindow  *window;
+        Control     control;
         Shader      program;
         GLuint      cube;
 
