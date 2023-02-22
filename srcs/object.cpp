@@ -60,8 +60,8 @@ void Object::draw() {
     program.Activate();
     glBindVertexArray(cube);
 
-    for (unsigned n = 0; n < BONE_NUMDER; n++) {
-        program.setMat4("M",  translate(vec3({0, 0, 5.0f})) * rotate(mat4(1), rot, vec3({0, 1, 0})) * skeleton.GetBone(n).offsetM);
+    for (unsigned n = 1; n < BONE_NUMDER; n++) {
+        program.setMat4("M",  translate(vec3({0, 0, 5.0f})) * rotate(mat4(1), rot, vec3({0, 1, 0})) * skeleton.GetBone(n).ModelMatrix());
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 14);	
     }
 }

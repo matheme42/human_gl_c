@@ -2,43 +2,49 @@
 
 std::ostream& operator<<(std::ostream& os, const Bone &bone) {
     os << "Bone     :" << std::endl;
-    os << "offset   : " << bone.offset << std::endl;
     os << "scale    : " << bone.Scale << std::endl;
     os << "rotation : " << bone.rotation << std::endl;
-    os << "offsetM  : " << std::endl << bone.offsetM << std::endl;
+    os << "localMatrix  : " << std::endl << bone.localMatrix << std::endl;
+    os << "finalMatrix  : " << std::endl << bone.finalMatrix << std::endl;
     return (os);
 }
 
 void Skeleton::BuildSkeleton() {
-    bones[HEAD].WithParent(&bones[TORSO]).WithChild(0).WithScale(vec3(1));//.WithOffset(vec3(0)).WithScale(vec3(1)).WithRotation(vec3(0));
-    bones[TORSO].WithParent(0).WithChild(&bones[HEAD]).WithScale(vec3({1.5, 2, 0.5}));
-    bones[L_H_ARM].WithParent(&bones[TORSO]).WithChild(&bones[L_L_ARM]).WithScale(vec3({0.5, 1.5f, 0.5}));
-    bones[R_H_ARM].WithParent(&bones[TORSO]).WithChild(&bones[R_L_ARM]).WithScale(vec3({0.5, 1.5f, 0.5}));
-    bones[L_L_ARM].WithParent(&bones[L_H_ARM]).WithChild(0).WithScale(vec3({0.5, 1.5f, 0.5}));
-    bones[R_L_ARM].WithParent(&bones[R_H_ARM]).WithChild(0).WithScale(vec3({0.5, 1.5f, 0.5}));
-    bones[L_H_LEG].WithParent(0).WithChild(&bones[L_L_LEG]).WithScale(vec3({0.5, 1.5f, 0.5}));
-    bones[R_H_LEG].WithParent(0).WithChild(&bones[R_L_LEG]).WithScale(vec3({0.5, 1.5f, 0.5}));
-    bones[L_L_LEG].WithParent(&bones[L_H_LEG]).WithChild(0).WithScale(vec3({0.5, 1.5f, 0.5}));
-    bones[R_L_LEG].WithParent(&bones[R_H_LEG]).WithChild(0).WithScale(vec3({0.5, 1.5f, 0.5}));
+    bones[HIP].SetChilds({&bones[TORSO], &bones[L_H_LEG], &bones[R_H_LEG]});
+    bones[HEAD]   .WithScale(vec3(1));//.WithOffset(vec3(0)).WithScale(vec3(1)).WithRotation(vec3(0));
+    bones[TORSO]  .WithScale(vec3({1.5, 2, 0.5})).SetChilds({&bones[HEAD], &bones[L_H_ARM], &bones[R_H_ARM]});
+    
+    bones[L_H_ARM].WithScale(vec3({0.5, 1.5f, 0.5})).SetChilds({&bones[L_L_ARM]});
+    bones[R_H_ARM].WithScale(vec3({0.5, 1.5f, 0.5})).SetChilds({&bones[R_L_ARM]});
+    
+    bones[L_L_ARM].WithScale(vec3({0.5, 1.5f, 0.5}));
+    bones[R_L_ARM].WithScale(vec3({0.5, 1.5f, 0.5}));
+
+    bones[L_H_LEG].WithScale(vec3({0.5, 1.5f, 0.5})).SetChilds({&bones[L_L_LEG]});
+    bones[R_H_LEG].WithScale(vec3({0.5, 1.5f, 0.5})).SetChilds({&bones[R_L_LEG]});
+    
+    bones[L_L_LEG].WithScale(vec3({0.5, 1.5f, 0.5}));
+    bones[R_L_LEG].WithScale(vec3({0.5, 1.5f, 0.5}));
 }
 
-void Skeleton::ComputeOffset() {
-    bones[HEAD].WithOffset((bones[TORSO].Scale + bones[HEAD].Scale + vec3({0, 0.5f, 0})) * vec3({0, 1.0f, 0})).ComputeOffsetMatrix();
-    bones[TORSO].WithOffset(vec3({0, 1.5f, 0})).ComputeOffsetMatrix();
-    bones[L_H_ARM].WithOffset(bones[TORSO].Scale * vec3({0.5, 1.0f, 0}) + bones[L_H_ARM].Scale * vec3({0.5, 0, 0})).ComputeOffsetMatrix();
-    bones[R_H_ARM].WithOffset(bones[TORSO].Scale * vec3({-0.5, 1.0f, 0}) - bones[R_H_ARM].Scale * vec3({0.5, 0, 0})).ComputeOffsetMatrix();
-    bones[L_L_ARM].WithOffset(bones[L_H_ARM].offset - bones[L_H_ARM].Scale * vec3({0, 1.0f, 0})).ComputeOffsetMatrix();
-    bones[R_L_ARM].WithOffset(bones[R_H_ARM].offset - bones[R_H_ARM].Scale * vec3({0, 1.0f, 0})).ComputeOffsetMatrix();
-    bones[L_H_LEG].WithOffset(vec3({-0.5, 0, 0})).ComputeOffsetMatrix();
-    bones[R_H_LEG].WithOffset(vec3({0.5, 0, 0})).ComputeOffsetMatrix();
-    bones[L_L_LEG].WithOffset(bones[L_H_LEG].offset - bones[L_H_LEG].Scale * vec3({0, 1.0f, 0})).ComputeOffsetMatrix();
-    bones[R_L_LEG].WithOffset(bones[R_H_LEG].offset - bones[R_H_LEG].Scale * vec3({0, 1.0f, 0})).ComputeOffsetMatrix();
+void Skeleton::ComputeLocalMatrix() {
+    bones[TORSO].SetLocalMatrix(mat4(1));
+    bones[HEAD].SetLocalMatrix(translate(bones[TORSO].Scale * vec3({0, 1.0f, 0})));
+    bones[L_H_LEG].SetLocalMatrix(rotate(mat4(translate(bones[TORSO].Scale * vec3({-0.5f, 0, 0}) + bones[L_H_LEG].Scale * vec3({0.5f, 0, 0}))), 180, vec3({0, 0, 1})));
+    bones[R_H_LEG].SetLocalMatrix(rotate(mat4(translate(bones[TORSO].Scale * vec3({0.5f, 0, 0}) - bones[R_H_LEG].Scale * vec3({0.5f, 0, 0}))), 180, vec3({0, 0, 1})));
+    bones[L_L_LEG].SetLocalMatrix(mat4(translate(bones[L_H_LEG].Scale * vec3({0, 1.0f, 0}))));
+    bones[R_L_LEG].SetLocalMatrix(mat4(translate(bones[R_H_LEG].Scale * vec3({0, 1.0f, 0}))));
+
+    bones[L_H_ARM].SetLocalMatrix(rotate(mat4(translate(bones[TORSO].Scale * vec3({-0.5f, 1.0f, 0}) - bones[L_H_ARM].Scale * vec3({0.5f, 0, 0}))), 180, vec3({0, 0, 1})));
+    bones[R_H_ARM].SetLocalMatrix(rotate(mat4(translate(bones[TORSO].Scale * vec3({0.5f, 1.0f, 0}) + bones[R_H_ARM].Scale * vec3({0.5f, 0, 0}))), 180, vec3({0, 0, 1})));
+    bones[L_L_ARM].SetLocalMatrix(mat4(translate(bones[L_H_ARM].Scale * vec3({0, 1.0f, 0}))));
+    bones[R_L_ARM].SetLocalMatrix(mat4(translate(bones[R_H_ARM].Scale * vec3({0, 1.0f, 0}))));
+    bones[HIP].ComputeFinalMatrix();
 }
 
 Skeleton::Skeleton() {
     BuildSkeleton();
-    ComputeOffset();
-    pos = vec3(0);
+    ComputeLocalMatrix();
 };
 
 Bone Skeleton::GetBone(unsigned id) {

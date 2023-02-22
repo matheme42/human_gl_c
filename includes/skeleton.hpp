@@ -3,37 +3,44 @@
 
 #include "Vector.hpp"
 #include "mat4.hpp"
+#include <vector>
 
 class Bone
 {
     Bone *parent;
-    Bone *child;
+    std::vector<Bone*> childs;
     public:
 
-    Bone() = default;
+    Bone() {
+        parent = 0;
+        localMatrix = mat4(1);
+        finalMatrix = mat4(1);
+    };
 
-    vec3 offset;
     vec3 Scale;
     vec3 rotation;
-    mat4 offsetM;
+    mat4 localMatrix;
+    mat4 finalMatrix;
 
-    Bone &ComputeOffsetMatrix() {
-        offsetM = translate(offset) * scale(Scale);
+    Bone &SetChilds(std::vector<Bone*> childs) {
+        this->childs = childs;
+        for (Bone* bone : childs)
+            bone->SetParent(this);
         return (*this);
     }
 
-    Bone &WithParent(Bone *parent) {
+    Bone &SetParent(Bone *parent) {
         this->parent = parent;
         return (*this);
     }
 
-    Bone &WithChild(Bone *child) {
-        this->child = child;
+    Bone &SetLocalMatrix(mat4 localMatrix) {
+        this->localMatrix = localMatrix;
         return (*this);
     }
-    Bone &WithOffset(vec3 offset) {
-        this->offset = offset;
-        return (*this);
+
+    mat4 ModelMatrix() {
+        return (finalMatrix * scale(Scale));
     }
 
     Bone &WithScale(vec3 scale) {
@@ -45,20 +52,21 @@ class Bone
         return (*this);
     }
 
-    Bone &WithOffsetM(mat4 offsetM) {
-        this->offsetM = offsetM;
-        return (*this);
+    void ComputeFinalMatrix() {     //use recursive or use a list in order from first parent to last childs if it is too slow
+        finalMatrix = (parent != 0) ?  parent->finalMatrix * localMatrix : localMatrix;
+        for (Bone* bone : childs)
+            bone->ComputeFinalMatrix();
     }
+
 };
 
 std::ostream& operator<<(std::ostream& os, const Bone &bone);
 
-enum BONEID { HEAD, TORSO, L_H_LEG, L_L_LEG, R_H_LEG, R_L_LEG, L_H_ARM, L_L_ARM, R_H_ARM, R_L_ARM, BONE_NUMDER};
+enum BONEID { HIP, HEAD, TORSO, L_H_LEG, L_L_LEG, R_H_LEG, R_L_LEG, L_H_ARM, L_L_ARM, R_H_ARM, R_L_ARM, BONE_NUMDER};
 
 class Skeleton
 {
     std::array<Bone, BONE_NUMDER> bones;
-    vec3 pos;
 
     public:
 
@@ -66,7 +74,7 @@ class Skeleton
     
     Bone GetBone(unsigned id);
 
-    void ComputeOffset();
+    void ComputeLocalMatrix();
 
     private:
     void BuildSkeleton();
