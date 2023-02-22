@@ -45,6 +45,20 @@ void Skeleton::ComputeLocalMatrix() {
 Skeleton::Skeleton() {
     BuildSkeleton();
     ComputeLocalMatrix();
+    bones[L_H_ARM].localMatrix =  rotate(bones[L_H_ARM].localMatrix, 25, vec3({1, 0, 0}));
+    bones[L_L_ARM].localMatrix =  rotate(bones[L_L_ARM].localMatrix, 25, vec3({1, 0, 0}));
+    bones[L_H_ARM].ComputeFinalMatrix();
+    bones[R_H_ARM].localMatrix =  rotate(bones[R_H_ARM].localMatrix, -25, vec3({1, 0, 0}));
+    bones[R_L_ARM].localMatrix =  rotate(bones[R_L_ARM].localMatrix, -25, vec3({1, 0, 0}));
+
+    bones[TORSO].localMatrix =  rotate(bones[TORSO].localMatrix, 25, vec3({1, 0, 0}));
+    bones[L_H_LEG].localMatrix =  rotate(bones[L_H_LEG].localMatrix, 25, vec3({1, 0, 0}));
+    bones[L_L_LEG].localMatrix =  rotate(bones[L_L_LEG].localMatrix, 25, vec3({1, 0, 0}));
+    bones[L_H_LEG].ComputeFinalMatrix();
+    bones[R_H_LEG].localMatrix =  rotate(bones[R_H_LEG].localMatrix, -25, vec3({1, 0, 0}));
+    bones[R_L_LEG].localMatrix =  rotate(bones[R_L_LEG].localMatrix, -25, vec3({1, 0, 0}));
+
+    bones[HIP].ComputeFinalMatrix();
 };
 
 Bone Skeleton::GetBone(unsigned id) {
