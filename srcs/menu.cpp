@@ -34,23 +34,36 @@ void Menu::onCursorChange(GLFWwindow  *window, float x, float y) {
 
     if (x > width * 0.5f - butonSizeWidth * 0.5f && x < width * 0.5f + butonSizeWidth * 0.5f) {
 
-        if (y >  height / 6.0f - 35.0f && y <  height / 6.0f + 35.0f) {
+        if (y > height / 10.0f - 35.0f && y <  height / 10.0f + 35.0f) {
             glfwSetCursor(window, handCursor);
-            buttonOver = "Run";
+            buttonOver = "Idle";
+            return ;
+        }
+        if (y > height / 5.0f + height / 10.0f - 35.0f && y < height / 5.0f + height / 10.0f + 35.0f) {
+            glfwSetCursor(window, handCursor);
+            buttonOver = "Jump";
             return ;
         }
 
-        if (y >  height / 3.0f + height / 6.0f - 35.0f && y < height / 3.0f + height / 6.0f + 35.0f) {
+        if (y > 2 * height / 5.0f + height / 10.0f - 35.0f && y < 2 * height / 5.0f + height / 10.0f + 35.0f) {
+            glfwSetCursor(window, handCursor);
+            buttonOver = "Flip";
+            return ;
+        }
+
+        if (y > 3 * height / 5.0f + height / 10.0f - 35.0f && y < 3 * height / 5.0f + height / 10.0f + 35.0f) {
             glfwSetCursor(window, handCursor);
             buttonOver = "Walk";
             return ;
         }
 
-        if (y > 2 * height / 3.0f + height / 6.0f - 35.0f && y < 2 * height / 3.0f + height / 6.0f + 35.0f) {
+        if (y > 4 * height / 5.0f + height / 10.0f - 35.0f && y < 4 * height / 5.0f + height / 10.0f + 35.0f) {
             glfwSetCursor(window, handCursor);
-            buttonOver = "Jump";
+            buttonOver = "OnWave";
             return ;
         }
+    
+    
         glfwSetCursor(window, NULL);
         buttonOver = "";
         return ;
@@ -64,13 +77,18 @@ void Menu::draw() {
     if (!enable) return ;
     drawBlur();
     float butonSizeWidth = width * 0.25;
-    drawButton(vec2({butonSizeWidth, 70.0f}), vec2({width * 0.5f - butonSizeWidth * 0.5f, height / 6.0f - 35.0f}), vec4({0.7f, 0.7f, 0.7f, 1.0f}), "Run");
-    drawButton(vec2({butonSizeWidth, 70.0f}), vec2({width * 0.5f - butonSizeWidth * 0.5f, height / 3.0f + height / 6.0f - 35.0f}), vec4({0.7f, 0.7f, 0.7f, 1.0f}), "Walk");
-    drawButton(vec2({butonSizeWidth, 70.0f}), vec2({width * 0.5f - butonSizeWidth * 0.5f, 2.0f * height / 3.0f + height / 6.0f - 35.0f}), vec4({0.7f, 0.7f, 0.7f, 1.0f}), "Jump");
+    drawButton(vec2({butonSizeWidth, 70.0f}), vec2({width * 0.5f - butonSizeWidth * 0.5f, height / 10.0f - 35.0f}), vec4({0.7f, 0.7f, 0.7f, 1.0f}), "Idle");
+    drawButton(vec2({butonSizeWidth, 70.0f}), vec2({width * 0.5f - butonSizeWidth * 0.5f, height / 5.0f + height / 10.0f - 35.0f}), vec4({0.7f, 0.7f, 0.7f, 1.0f}), "Walk");
+    drawButton(vec2({butonSizeWidth, 70.0f}), vec2({width * 0.5f - butonSizeWidth * 0.5f, 2.0f * height / 5.0f + height / 10.0f - 35.0f}), vec4({0.7f, 0.7f, 0.7f, 1.0f}), "Jump");
+    drawButton(vec2({butonSizeWidth, 70.0f}), vec2({width * 0.5f - butonSizeWidth * 0.5f, 3.0f * height / 5.0f + height / 10.0f - 35.0f}), vec4({0.7f, 0.7f, 0.7f, 1.0f}), "Walk");
+    drawButton(vec2({butonSizeWidth, 70.0f}), vec2({width * 0.5f - butonSizeWidth * 0.5f, 4.0f * height / 5.0f + height / 10.0f - 35.0f}), vec4({0.7f, 0.7f, 0.7f, 1.0f}), "Jump");
 
-    text.display("Walk", 0.0f, 0.0f, 0.001f, vec3({1.0, 1.0f, 1.0f}));
-    text.display("Jump", 0.0f, -0.65f, 0.001f, vec3({1.0, 1.0f, 1.0f}));
-    text.display("Run", 0.0f, 0.65f, 0.001f, vec3({1.0, 1.0f, 1.0f}));
+
+    text.display("Idle", 0.0f, 0.78f, 0.001f, vec3({1.0, 1.0f, 1.0f}));
+    text.display("Jump", -0.03f, 0.38f, 0.001f, vec3({1.0, 1.0f, 1.0f}));
+    text.display("Flip", 0.0f, 0.0f, 0.001f, vec3({1.0, 1.0f, 1.0f}));
+    text.display("Walk", -0.03f, -0.42f, 0.001f, vec3({1.0, 1.0f, 1.0f}));
+    text.display("OnWave", -0.06f, -0.82f, 0.001f, vec3({1.0, 1.0f, 1.0f}));
 
 }
 

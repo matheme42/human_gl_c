@@ -28,6 +28,7 @@ Animation<BONE_NUMDER> walking();
 Animation<BONE_NUMDER> jump();
 Animation<BONE_NUMDER> flip();
 Animation<BONE_NUMDER> put();
+Animation<BONE_NUMDER> hand();
 
 class Application {
 

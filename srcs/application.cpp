@@ -40,13 +40,22 @@ void Application::configure() {
 	});
 
 	menu.onButtonClick = ([&](std::string button) {
-		std::cout << button << std::endl;
 		if (button == "Walk"){
 		    object.anim = walking();
     		object.anim.Loop();
 		} else if (button == "Jump") {
 			object.anim = jump();
     		object.anim.Loop();
+		} else if (button == "Idle") {
+			object.anim = put();
+    		object.anim.Loop();	
+		} else if (button == "Flip") {
+			std::cout << "coucou" << std::endl;
+			object.anim = flip();
+    		object.anim.Loop();	
+		} else if (button == "OnWave") {
+			object.anim = hand();
+    		object.anim.Loop();	
 		}
 	});
 }
