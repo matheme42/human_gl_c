@@ -13,9 +13,9 @@ class Object {
     Shader      program;
     GLuint      cube;
     Skeleton    skeleton;
-    Animation<BONE_NUMDER> anim;
 
     public:
+        Animation<BONE_NUMDER> anim;
         void init(mat4 perspective, mat4 lookAt);
         void draw();
         

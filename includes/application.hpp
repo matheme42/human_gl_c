@@ -23,6 +23,12 @@
 #include "cubemap.hpp"
 #include "menu.hpp"
 
+
+Animation<BONE_NUMDER> walking();
+Animation<BONE_NUMDER> jump();
+Animation<BONE_NUMDER> flip();
+Animation<BONE_NUMDER> put();
+
 class Application {
 
     #define WINDOWS_X 1600

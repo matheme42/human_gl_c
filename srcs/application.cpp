@@ -41,6 +41,13 @@ void Application::configure() {
 
 	menu.onButtonClick = ([&](std::string button) {
 		std::cout << button << std::endl;
+		if (button == "Walk"){
+		    object.anim = walking();
+    		object.anim.Loop();
+		} else if (button == "Jump") {
+			object.anim = jump();
+    		object.anim.Loop();
+		}
 	});
 }
 
