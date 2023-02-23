@@ -79,16 +79,12 @@ class Bone
     void ComputeAnimFinalMatrix(AnimFrame<_size> &frame) {
         mat4 animMatrix;
         
-        animMatrix = rotation(frame.rotation[ID][0], vec3({1, 0, 0})) *
+        animMatrix = translate(frame.translation[ID]) * rotation(frame.rotation[ID][0], vec3({1, 0, 0})) *
                     rotation(frame.rotation[ID][1], vec3({0, 1, 0})) *
-                    rotation(frame.rotation[ID][2], vec3({0, 0, 1})) * translate(frame.translation[ID]);
+                    rotation(frame.rotation[ID][2], vec3({0, 0, 1})) ;
                     
         finalMatrix = (parent != 0) ? parent->finalMatrix * localMatrix * animMatrix : localMatrix * animMatrix;
 
-       /* if (ID == 0) {
-            std::cout << finalMatrix << std::endl;
-            return ;
-        }*/
         for (Bone* bone : childs)
             bone->ComputeAnimFinalMatrix(frame);
     }
