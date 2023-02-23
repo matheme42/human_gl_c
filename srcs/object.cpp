@@ -1,5 +1,7 @@
 #include "object.hpp"
 
+Animation<BONE_NUMDER> walking();
+Animation<BONE_NUMDER> flip();
 
 void Object::init(mat4 perspective, mat4 lookAt) {
 	const GLfloat cube_strip[] = {
@@ -38,6 +40,9 @@ void Object::init(mat4 perspective, mat4 lookAt) {
     program.Activate();
     program.setMat4("P", perspective);
 	program.setMat4("V", lookAt);
+
+    anim = flip();
+    anim.Loop();
 }
 
 
