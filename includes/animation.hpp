@@ -20,7 +20,8 @@ struct AnimFrame {
     
 
     AnimFrame &Set(unsigned ID, vec3 rotation, vec3 translation) {
-        matrices[ID] = matrix;
+        this->rotation[ID] = rotation;
+        this->translation[ID] = translation;
         return (*this);
     }
 
@@ -30,10 +31,12 @@ struct AnimFrame {
     }
 
     AnimFrame &Clean() {
-        mat4 tmp(1);
+        vec3 tmp(0);
 
-        for (unsigned n = 0; n < _size; n++)
-            matrices[n] = tmp;
+        for (unsigned n = 0; n < _size; n++) {
+            rotation[n] = tmp;
+            translation[n] = tmp;
+        }
         return (*this);
     }
 };
@@ -42,8 +45,10 @@ template< size_t _size >
 AnimFrame<_size> lerp(AnimFrame<_size> &frame1, AnimFrame<_size> &frame2, float ratio) {
     AnimFrame<_size> result;
 
-    for (unsigned n = 0; n < _size; n++)
-        result.matrices[n] = lerp(frame1.matrices[n], frame2.matrices[n], ratio);
+    for (unsigned n = 0; n < _size; n++) {
+        result.rotation[n] = lerp(frame1.rotation[n], frame2.rotation[n], ratio);
+        result.translation[n] = lerp(frame1.translation[n], frame2.translation[n], ratio);
+    }
     result.time = frame1.time * ratio + frame2.time * (1.0 - ratio);
     return result;
 }
@@ -53,7 +58,8 @@ std::ostream& operator<<(std::ostream& os, const AnimFrame<_size> &frame) {
     os << "Time     : " << frame.time << std::endl;
 
     for (unsigned n = 0; n < _size; n++) {
-        os << "matrix  : " << n << std::endl << frame.matrices[n] << std::endl;
+        os << "translation  : " << n << std::endl << frame.translation[n] << std::endl;
+        os << "rotation  : " << n << std::endl << frame.rotation[n] << std::endl;
     }
     return (os);
 }

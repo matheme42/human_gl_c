@@ -77,10 +77,13 @@ class Bone
 
     template< size_t _size >
     void ComputeAnimFinalMatrix(AnimFrame<_size> &frame) {
-
-
-
-        finalMatrix = (parent != 0) ? parent->finalMatrix * localMatrix * frame.matrices[ID] : localMatrix * frame.matrices[ID];
+        mat4 animMatrix;
+        
+        animMatrix = rotation(frame.rotation[ID][0], vec3({1, 0, 0})) *
+                    rotation(frame.rotation[ID][1], vec3({0, 1, 0})) *
+                    rotation(frame.rotation[ID][2], vec3({0, 0, 1})) * translate(frame.translation[ID]);
+                    
+        finalMatrix = (parent != 0) ? parent->finalMatrix * localMatrix * animMatrix : localMatrix * animMatrix;
 
        /* if (ID == 0) {
             std::cout << finalMatrix << std::endl;
