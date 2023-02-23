@@ -61,7 +61,6 @@ GPP			= g++ -std=c++11 $(OPTIMISATION_FLAG) $(DEBUG_FLAG)
 
 
 all: $(NAME)
-	@./human_gl
 
 $(NAME) : $(OBJS)
 	@$(GPP) $^ -o $@ $(FRAMEWORK)
