@@ -1,9 +1,19 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
+#ifdef _WIN32
+#include <direct.h>
+// MSDN recommends against using getcwd & chdir names
+#define cwd _getcwd
+#define cd _chdir
+#else
+#include "unistd.h"
+#define cwd getcwd
+#define cd chdir
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "shader.hpp"

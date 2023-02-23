@@ -11,6 +11,7 @@
 
 
 mat4    perspective(float fov, float ratio, float near, float far);
+mat4    rotation(float angle, vec3 vector);
 mat4    rotate(const mat4& matrix, float angle, vec3 vector);
 mat4    translate(const vec3& v);
 mat4    translate(const mat4& m, const vec3& v);

@@ -12,8 +12,7 @@ mat4    perspective(float fov, float ratio, float near, float far) {
     });
 }
 
-
-mat4    rotate(const mat4& matrix, float angle, vec3 vector) {
+mat4    rotation(float angle, vec3 vector) {
     float c = cosf(RADIAN(angle));
     float s = sinf(RADIAN(angle));
     vector = normalize(vector);
@@ -27,7 +26,11 @@ mat4    rotate(const mat4& matrix, float angle, vec3 vector) {
                     ,y * x * rc + z * s,    y * y * rc + c,     y * z * rc - x * s, 0
                     ,x * z * rc - y * s,    y * z * rc + x * s, z * z * rc + c,     0
                     ,0,                     0,                  0,                  1 });
-    return matrix * rotation;
+    return rotation;
+}
+
+mat4    rotate(const mat4& matrix, float angle, vec3 vector) {
+    return matrix * rotation(angle, vector);
 }
 
 

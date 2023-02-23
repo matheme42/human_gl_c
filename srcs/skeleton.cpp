@@ -1,15 +1,18 @@
 #include "skeleton.hpp"
 
 std::ostream& operator<<(std::ostream& os, const Bone &bone) {
-    os << "Bone     :" << std::endl;
-    os << "scale    : " << bone.Scale << std::endl;
-    os << "rotation : " << bone.rotation << std::endl;
+    os << "Bone     : " << bone.GetID() << std::endl;
+    os << "scale    : " << bone.size << std::endl;
+    os << "scaleMatrix  : " << std::endl << bone.scaleMatrix << std::endl;
     os << "localMatrix  : " << std::endl << bone.localMatrix << std::endl;
     os << "finalMatrix  : " << std::endl << bone.finalMatrix << std::endl;
     return (os);
 }
 
 void Skeleton::BuildSkeleton() {
+    for (unsigned n = 0; n < BONE_NUMDER; n++)
+        bones[n].SetID(n);
+
     bones[HIP].SetChilds({&bones[TORSO], &bones[L_H_LEG], &bones[R_H_LEG]});
     bones[HEAD]   .WithScale(vec3(1));//.WithOffset(vec3(0)).WithScale(vec3(1)).WithRotation(vec3(0));
     bones[TORSO]  .WithScale(vec3({1.5, 2, 0.5})).SetChilds({&bones[HEAD], &bones[L_H_ARM], &bones[R_H_ARM]});
@@ -29,36 +32,35 @@ void Skeleton::BuildSkeleton() {
 
 void Skeleton::ComputeLocalMatrix() {
     bones[TORSO].SetLocalMatrix(mat4(1));
-    bones[HEAD].SetLocalMatrix(translate(bones[TORSO].Scale * vec3({0, 1.0f, 0})));
-    bones[L_H_LEG].SetLocalMatrix(rotate(mat4(translate(bones[TORSO].Scale * vec3({-0.5f, 0, 0}) + bones[L_H_LEG].Scale * vec3({0.5f, 0, 0}))), 180, vec3({0, 0, 1})));
-    bones[R_H_LEG].SetLocalMatrix(rotate(mat4(translate(bones[TORSO].Scale * vec3({0.5f, 0, 0}) - bones[R_H_LEG].Scale * vec3({0.5f, 0, 0}))), 180, vec3({0, 0, 1})));
-    bones[L_L_LEG].SetLocalMatrix(mat4(translate(bones[L_H_LEG].Scale * vec3({0, 1.0f, 0}))));
-    bones[R_L_LEG].SetLocalMatrix(mat4(translate(bones[R_H_LEG].Scale * vec3({0, 1.0f, 0}))));
+    bones[HEAD].SetLocalMatrix(translate(bones[TORSO].size * vec3({0, 1.0f, 0})));
+    bones[L_H_LEG].SetLocalMatrix(rotate(mat4(translate(bones[TORSO].size * vec3({-0.5f, 0, 0}) + bones[L_H_LEG].size * vec3({0.5f, 0, 0}))), 180, vec3({0, 0, 1})));
+    bones[R_H_LEG].SetLocalMatrix(rotate(mat4(translate(bones[TORSO].size * vec3({0.5f, 0, 0}) - bones[R_H_LEG].size * vec3({0.5f, 0, 0}))), 180, vec3({0, 0, 1})));
+    bones[L_L_LEG].SetLocalMatrix(mat4(translate(bones[L_H_LEG].size * vec3({0, 1.0f, 0}))));
+    bones[R_L_LEG].SetLocalMatrix(mat4(translate(bones[R_H_LEG].size * vec3({0, 1.0f, 0}))));
 
-    bones[L_H_ARM].SetLocalMatrix(rotate(mat4(translate(bones[TORSO].Scale * vec3({-0.5f, 1.0f, 0}) - bones[L_H_ARM].Scale * vec3({0.5f, 0, 0}))), 180, vec3({0, 0, 1})));
-    bones[R_H_ARM].SetLocalMatrix(rotate(mat4(translate(bones[TORSO].Scale * vec3({0.5f, 1.0f, 0}) + bones[R_H_ARM].Scale * vec3({0.5f, 0, 0}))), 180, vec3({0, 0, 1})));
-    bones[L_L_ARM].SetLocalMatrix(mat4(translate(bones[L_H_ARM].Scale * vec3({0, 1.0f, 0}))));
-    bones[R_L_ARM].SetLocalMatrix(mat4(translate(bones[R_H_ARM].Scale * vec3({0, 1.0f, 0}))));
+    bones[L_H_ARM].SetLocalMatrix(rotate(mat4(translate(bones[TORSO].size * vec3({-0.5f, 1.0f, 0}) - bones[L_H_ARM].size * vec3({0.5f, 0, 0}))), 180, vec3({0, 0, 1})));
+    bones[R_H_ARM].SetLocalMatrix(rotate(mat4(translate(bones[TORSO].size * vec3({0.5f, 1.0f, 0}) + bones[R_H_ARM].size * vec3({0.5f, 0, 0}))), 180, vec3({0, 0, 1})));
+    bones[L_L_ARM].SetLocalMatrix(mat4(translate(bones[L_H_ARM].size * vec3({0, 1.0f, 0}))));
+    bones[R_L_ARM].SetLocalMatrix(mat4(translate(bones[R_H_ARM].size * vec3({0, 1.0f, 0}))));
     bones[HIP].ComputeFinalMatrix();
 }
 
 Skeleton::Skeleton() {
     BuildSkeleton();
     ComputeLocalMatrix();
-    bones[L_H_ARM].localMatrix =  rotate(bones[L_H_ARM].localMatrix, 25, vec3({1, 0, 0}));
-    bones[L_L_ARM].localMatrix =  rotate(bones[L_L_ARM].localMatrix, 25, vec3({1, 0, 0}));
-    bones[L_H_ARM].ComputeFinalMatrix();
-    bones[R_H_ARM].localMatrix =  rotate(bones[R_H_ARM].localMatrix, -25, vec3({1, 0, 0}));
-    bones[R_L_ARM].localMatrix =  rotate(bones[R_L_ARM].localMatrix, -25, vec3({1, 0, 0}));
+    AnimFrame<BONE_NUMDER> frame;
 
-    bones[TORSO].localMatrix =  rotate(bones[TORSO].localMatrix, 25, vec3({1, 0, 0}));
-    bones[L_H_LEG].localMatrix =  rotate(bones[L_H_LEG].localMatrix, 25, vec3({1, 0, 0}));
-    bones[L_L_LEG].localMatrix =  rotate(bones[L_L_LEG].localMatrix, 25, vec3({1, 0, 0}));
-    bones[L_H_LEG].ComputeFinalMatrix();
-    bones[R_H_LEG].localMatrix =  rotate(bones[R_H_LEG].localMatrix, -25, vec3({1, 0, 0}));
-    bones[R_L_LEG].localMatrix =  rotate(bones[R_L_LEG].localMatrix, -25, vec3({1, 0, 0}));
+    frame.Set(TORSO,    rotation(-25, vec3({ 1, 0, 0 })))
+        .Set(HIP,       rotation(50, vec3({ 1, 0, 0 })))
+        .Set(HEAD,      rotation(25, vec3({ 1, 0, 0 })))
+        .Set(L_H_ARM,   rotation(25, vec3({ 1, 0, 0 })))
+        .Set(L_L_ARM,   rotation(25, vec3({ 1, 0, 0 })))
+        .Set(R_H_ARM,   rotation(-25, vec3({1, 0, 0})))
+        .Set(R_L_ARM,   rotation(-25, vec3({ 1, 0, 0 })));
 
-    bones[HIP].ComputeFinalMatrix();
+    bones[HIP].ComputeAnimFinalMatrix(frame);
+
+//    std::cout << bones[R_L_ARM] << std::endl;
 };
 
 Bone Skeleton::GetBone(unsigned id) {

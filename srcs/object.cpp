@@ -2,20 +2,20 @@
 
 void Object::init(mat4 perspective, mat4 lookAt) {
 	const GLfloat cube_strip[] = {
-    -0.5f, 1.0f, 0.5f,     // Front-top-left
-    0.5f, 1.0f, 0.5f,      // Front-top-right
-    -0.5f, 0.0f, 0.5f,    // Front-bottom-left
-    0.5f, 0.0f, 0.5f,     // Front-bottom-right
-    0.5f, 0.0f, -0.5f,    // Back-bottom-right
-    0.5f, 1.0f, 0.5f,      // Front-top-right
-    0.5f, 1.0f, -0.5f,     // Back-top-right
-    -0.5f, 1.0f, 0.5f,     // Front-top-left
-    -0.5f, 1.0f, -0.5f,    // Back-top-left
-    -0.5f, 0.0f, 0.5f,    // Front-bottom-left
-    -0.5f, 0.0f, -0.5f,   // Back-bottom-left
-    0.5f, 0.0f, -0.5f,    // Back-bottom-right
-    -0.5f, 1.0f, -0.5f,    // Back-top-left
-    0.5f, 1.0f, -0.5f      // Back-top-right
+    0.0f, 1.0f, 1.0f,     // Front-top-left
+    1.0f, 1.0f, 1.0f,      // Front-top-right
+    0.0f, 0.0f, 1.0f,    // Front-bottom-left
+    1.0f, 0.0f, 1.0f,     // Front-bottom-right
+    1.0f, 0.0f, 0.0f,    // Back-bottom-right
+    1.0f, 1.0f, 1.0f,      // Front-top-right
+    1.0f, 1.0f, 0.0f,     // Back-top-right
+    0.0f, 1.0f, 1.0f,     // Front-top-left
+    0.0f, 1.0f, 0.0f,    // Back-top-left
+    0.0f, 0.0f, 1.0f,    // Front-bottom-left
+    0.0f, 0.0f, 0.0f,   // Back-bottom-left
+    1.0f, 0.0f, 0.0f,    // Back-bottom-right
+    0.0f, 1.0f, 0.0f,    // Back-top-left
+    1.0f, 1.0f, 0.0f      // Back-top-right
 };
 
     program.Load(vertexSrc, fragSrc);
@@ -57,11 +57,13 @@ void Object::setPerspective(mat4 perspective4) {
 
 
 void Object::draw() {
+    mat4 model;
+
     program.Activate();
     glBindVertexArray(cube);
-
+    model = translate(vec3({ 0, 0, 5.0f })) * rotate(mat4(1), rot, vec3({ 0, 1, 0 }));
     for (unsigned n = 1; n < BONE_NUMDER; n++) {
-        program.setMat4("M",  translate(vec3({0, 0, 5.0f})) * rotate(mat4(1), rot, vec3({0, 1, 0})) * skeleton.GetBone(n).ModelMatrix());
+        program.setMat4("M", model * skeleton.GetBone(n).ModelMatrix());
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 14);	
     }
 }

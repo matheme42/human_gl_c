@@ -5,20 +5,51 @@
 #include "mat4.hpp"
 #include <vector>
 
+enum BONEID { HIP, HEAD, TORSO, L_H_LEG, L_L_LEG, R_H_LEG, R_L_LEG, L_H_ARM, L_L_ARM, R_H_ARM, R_L_ARM, BONE_NUMDER };
+
+
+template< size_t _size >
+struct AnimFrame {
+
+    AnimFrame() {
+        Clean();
+    }
+
+    std::array<mat4, _size> matrices;
+    
+
+    AnimFrame &Set(unsigned ID, mat4 matrix) {
+        matrices[ID] = matrix;
+        return (*this);
+    }
+
+    AnimFrame &Clean() {
+        mat4 tmp(1);
+
+        for (unsigned n = 0; n < _size; n++)
+            matrices[n] = tmp;
+        return (*this);
+    }
+};
+
 class Bone
 {
-    Bone *parent;
-    std::vector<Bone*> childs;
+    int                 ID;
+    Bone                *parent;
+    std::vector<Bone*>  childs;
     public:
 
     Bone() {
+        ID = 0;
         parent = 0;
+        size = vec3(1);
         localMatrix = mat4(1);
         finalMatrix = mat4(1);
+        scaleMatrix = mat4(1);
     };
 
-    vec3 Scale;
-    vec3 rotation;
+    vec3 size;
+    mat4 scaleMatrix;
     mat4 localMatrix;
     mat4 finalMatrix;
 
@@ -34,35 +65,46 @@ class Bone
         return (*this);
     }
 
+    Bone& SetID(int ID) {
+        this->ID = ID;
+        return (*this);
+    }
+
+    int GetID() const {
+        return (ID);
+    }
+
     Bone &SetLocalMatrix(mat4 localMatrix) {
         this->localMatrix = localMatrix;
         return (*this);
     }
 
     mat4 ModelMatrix() {
-        return (finalMatrix * scale(Scale));
+        return (finalMatrix * scaleMatrix);
     }
 
-    Bone &WithScale(vec3 scale) {
-        this->Scale = scale;
-        return (*this);
-    }
-    Bone &WithRotation(vec3 rotation) {
-        this->rotation = rotation;
+    Bone &WithScale(vec3 size) {
+        this->size = size;
+        scaleMatrix = scale(size) * translate(vec3({-0.5f, 0, -0.5f}));
         return (*this);
     }
 
     void ComputeFinalMatrix() {     //use recursive or use a list in order from first parent to last childs if it is too slow
-        finalMatrix = (parent != 0) ?  parent->finalMatrix * localMatrix : localMatrix;
+        finalMatrix = (parent != 0) ?  parent->finalMatrix * localMatrix  : localMatrix;
         for (Bone* bone : childs)
             bone->ComputeFinalMatrix();
+    }
+
+    template< size_t _size >
+    void ComputeAnimFinalMatrix(AnimFrame<_size> &frame) {
+        finalMatrix = (parent != 0) ? parent->finalMatrix * localMatrix * frame.matrices[ID] : localMatrix * frame.matrices[ID];
+        for (Bone* bone : childs)
+            bone->ComputeAnimFinalMatrix(frame);
     }
 
 };
 
 std::ostream& operator<<(std::ostream& os, const Bone &bone);
-
-enum BONEID { HIP, HEAD, TORSO, L_H_LEG, L_L_LEG, R_H_LEG, R_L_LEG, L_H_ARM, L_L_ARM, R_H_ARM, R_L_ARM, BONE_NUMDER};
 
 class Skeleton
 {

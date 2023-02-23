@@ -27,7 +27,7 @@ void CubeMap::loadTexture(const char **fileNames) {
             std::cerr << "Failed to load" << fileNames[n] << std::endl;
             continue;
         }
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + n, 0, GL_RGB, x, y, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + n, 0, GL_RGB, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         stbi_image_free(data);
     }
 }
@@ -87,12 +87,12 @@ void CubeMap::init(mat4 perspective, mat4 lookAt) {
     std::vector <GLuint> indices(skyboxIndices, skyboxIndices + sizeof(skyboxIndices) / sizeof(GLuint));
 
     texturesName = new const char* [6];
-    texturesName[0] = "textures/skybox/left.png";
-    texturesName[1] = "textures/skybox/right.png";
-    texturesName[2] = "textures/skybox/up.png";
-    texturesName[3] = "textures/skybox/down.png";
-    texturesName[4] = "textures/skybox/front.png";
-    texturesName[5] = "textures/skybox/back.png";
+    texturesName[0] = "textures/skybox/X+.png";
+    texturesName[1] = "textures/skybox/X-.png";
+    texturesName[2] = "textures/skybox/Y+.png";
+    texturesName[3] = "textures/skybox/Y-.png";
+    texturesName[4] = "textures/skybox/Z+.png";
+    texturesName[5] = "textures/skybox/Z-.png";
     genTexture();
     loadTexture(texturesName);
     delete[] texturesName;

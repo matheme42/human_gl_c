@@ -30,13 +30,13 @@ void Application::configure() {
 void Application::init() {
     char buff[400];
     
-    getcwd(buff, sizeof(buff));
+	cwd(buff, sizeof(buff));
 	if(!glfwInit())
 	{
 		fprintf(stderr, "Failed to initialize GLFW\n" );
 		exit(1);
 	}
-	chdir(buff);
+	cd(buff);
 	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
