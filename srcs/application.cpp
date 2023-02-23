@@ -50,7 +50,6 @@ void Application::configure() {
 			object.anim = put();
     		object.anim.Loop();	
 		} else if (button == "Flip") {
-			std::cout << "coucou" << std::endl;
 			object.anim = flip();
     		object.anim.Loop();	
 		} else if (button == "OnWave") {

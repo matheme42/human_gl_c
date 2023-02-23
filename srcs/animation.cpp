@@ -181,3 +181,35 @@ Animation<BONE_NUMDER> put() {
     )
     .AddFrame(start.SetTime(8));
 }
+
+Animation<BONE_NUMDER> hand() {
+    
+    Animation<BONE_NUMDER> anim;
+
+    AnimFrame<BONE_NUMDER> frame, start;
+
+    start.Clean().SetTime(0).Set(R_H_ARM,       vec3({25, 0, 0}), vec3(0))
+        .Set(R_L_ARM,       vec3({100, 0, 0}), vec3(0))
+        .Set(L_H_ARM,       vec3({120, 0, 0}), vec3(0))
+        .Set(R_HAND,       vec3({20, 0, 0}), vec3(0))
+        .Set(HEAD,       vec3({0, 0, 360}), vec3(0));
+    
+    return anim.AddFrame(start)
+    .AddFrame(frame.Clean().SetTime(0.5f)
+        .Set(R_H_ARM,       vec3({25, 0, 0}), vec3(0))
+        .Set(R_L_ARM,       vec3({100, 0, 10}), vec3(0))
+        .Set(L_H_ARM,       vec3({120, 0, 0}), vec3(0))
+        .Set(R_HAND,       vec3({20, 0, 20}), vec3(0))
+        .Set(HEAD,       vec3({0, 0, -360}), vec3(40))
+        .Set(TORSO,       vec3(0), vec3({0, 1, 0}))
+    )
+
+    .AddFrame(frame.Clean().SetTime(1.0f)
+        .Set(R_H_ARM,       vec3({25, 0, 0}), vec3(0))
+        .Set(R_L_ARM,       vec3({100, 0, -10}), vec3(0))
+        .Set(L_H_ARM,       vec3({120, 0, 0}), vec3(0))
+        .Set(R_HAND,       vec3({20, 0, -20}), vec3(0))
+        .Set(HEAD,       vec3({0, 0, -360}), vec3(0))
+    )
+    .AddFrame(start.SetTime(1.5f));
+}

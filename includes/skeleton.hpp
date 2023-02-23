@@ -6,7 +6,7 @@
 #include <vector>
 #include "animation.hpp"
 
-enum BONEID { HIP, HEAD, TORSO, L_H_LEG, L_L_LEG, R_H_LEG, R_L_LEG, L_H_ARM, L_L_ARM, R_H_ARM, R_L_ARM, BONE_NUMDER };
+enum BONEID { HIP, HEAD, TORSO, L_H_LEG, L_L_LEG, R_H_LEG, R_L_LEG, L_H_ARM, L_L_ARM, R_H_ARM, R_L_ARM, L_HAND, R_HAND, BONE_NUMDER };
 
 class Bone
 {
