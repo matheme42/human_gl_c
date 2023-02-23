@@ -49,6 +49,11 @@ public:
     inline void setVec2(const char* name, int x, int y) {
         glUniform2i(glGetUniformLocation(ID, name), x, y); //maybe change it to calculate glGetUniformLocation only once
     }
+
+    inline void setVec4(const char* name, const vec4& vector) {
+        glUniform4fv(glGetUniformLocation(ID, name),1, &vector[0]); //maybe change it to calculate glGetUniformLocation only once
+    }
+
     void setInt(const char* name, int value) {
         glUniform1i(glGetUniformLocation(ID, name), value);
     }

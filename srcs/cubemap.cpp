@@ -49,18 +49,6 @@ void CubeMap::init(mat4 perspective, mat4 lookAt) {
         -1.0f,  1.0f, -1.0f
     };
 
-    float texturesUv[] =
-    {
-        //   Coordinates
-        0.0f,0.0f,
-        0.0f,1.0f,
-        0.0f,0.0f,
-        0.0f,1.0f,
-        1.0f,0.0f,
-        1.0f,1.0f,
-        1.0f,0.0f,
-        1.0f,1.0f
-    };
 
     unsigned int skyboxIndices[] =
     {
@@ -114,13 +102,6 @@ void CubeMap::init(mat4 perspective, mat4 lookAt) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-
-    GLuint VBO2;
-    glGenBuffers(1, &VBO2);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO2);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(texturesUv), texturesUv, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
     glBindVertexArray(0);
 

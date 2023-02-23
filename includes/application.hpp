@@ -21,6 +21,7 @@
 #include "control.hpp"
 #include "object.hpp"
 #include "cubemap.hpp"
+#include "menu.hpp"
 
 class Application {
 
@@ -32,6 +33,7 @@ class Application {
         Control     control;
         Object      object;
         CubeMap     cubemap;
+        Menu        menu;
 
         void init();
         void configure();

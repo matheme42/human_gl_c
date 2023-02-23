@@ -17,6 +17,6 @@ mat4    translate(const vec3& v);
 mat4    translate(const mat4& m, const vec3& v);
 mat4    scale(const vec3& v);
 mat4    scale(const mat4& m, const vec3& v);
-mat4    lookAt(const vec3& from, const vec3& to, const vec3& upvector );
-
+mat4    lookAt(const vec3& from, const vec3& to, const vec3& upvector);
+mat4     ortho(float left, float right, float bottom, float top);
 #endif

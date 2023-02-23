@@ -1,6 +1,5 @@
 #include "application.hpp"
 
-
 Application::Application(){
     init();
 	configure();
@@ -10,12 +9,16 @@ Application::Application(){
 void Application::configure() {
 	mat4 perspective4 = perspective(60, (float)WINDOWS_X / (float)WINDOWS_Y, 0.1f, 100.0f);
 	mat4 lookAt4 = lookAt(vec3({0, 2, -10}), vec3({0, 0, 0}), vec3({0, 1, 0}));
-
+	object.init(perspective4, lookAt4);
+	cubemap.init(perspective4, lookAt4);
 	control.init(window);
+	menu.init((float)WINDOWS_X, (float)WINDOWS_Y);
 
-	control.onPerspectiveChange = ([&](mat4 perspective4){
+	control.onWindowChange = ([&](float width, float height){
+		mat4 perspective4 = perspective(60, (float)width / (float)height, 0.1f, 100.0f);
 		object.setPerspective(perspective4);
 		cubemap.setPerspective(perspective4);
+		menu.resize(width, height);
 	});
 
 	control.onViewChange = ([&](mat4 view) {
@@ -23,8 +26,22 @@ void Application::configure() {
 		cubemap.setView(view);
 	});
 
-	object.init(perspective4, lookAt4);
-	cubemap.init(perspective4, lookAt4);
+	control.onPauseChange = ([&](bool pause) {
+		menu.enable = pause;
+	});
+
+	control.onPauseCursorPosition = ([&](float posX, float posY) {
+		menu.onCursorChange(window, posX, posY);
+	});
+
+
+	control.onPauseCursorClick = ([&](int button, int action) {
+		menu.onCursorClick(button, action);
+	});
+
+	menu.onButtonClick = ([&](std::string button) {
+		std::cout << button << std::endl;
+	});
 }
 
 void Application::init() {
@@ -70,6 +87,7 @@ void Application::start() {
 		control.getKeyboardEvent(window);
 		cubemap.draw();
 		object.draw();
+		menu.draw();
 		glfwSwapBuffers(window);
 	}
 }

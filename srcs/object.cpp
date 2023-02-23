@@ -7,35 +7,37 @@ Animation<BONE_NUMDER> put();
 
 void Object::init(mat4 perspective, mat4 lookAt) {
 	const GLfloat cube_strip[] = {
-    0.0f, 1.0f, 1.0f,     // Front-top-left
-    1.0f, 1.0f, 1.0f,      // Front-top-right
-    0.0f, 0.0f, 1.0f,    // Front-bottom-left
-    1.0f, 0.0f, 1.0f,     // Front-bottom-right
-    1.0f, 0.0f, 0.0f,    // Back-bottom-right
-    1.0f, 1.0f, 1.0f,      // Front-top-right
-    1.0f, 1.0f, 0.0f,     // Back-top-right
-    0.0f, 1.0f, 1.0f,     // Front-top-left
-    0.0f, 1.0f, 0.0f,    // Back-top-left
-    0.0f, 0.0f, 1.0f,    // Front-bottom-left
-    0.0f, 0.0f, 0.0f,   // Back-bottom-left
-    1.0f, 0.0f, 0.0f,    // Back-bottom-right
-    0.0f, 1.0f, 0.0f,    // Back-top-left
-    1.0f, 1.0f, 0.0f      // Back-top-right
-};
-
+        0.0f, 1.0f, 1.0f,     // Front-top-left
+        1.0f, 1.0f, 1.0f,      // Front-top-right
+        0.0f, 0.0f, 1.0f,    // Front-bottom-left
+        1.0f, 0.0f, 1.0f,     // Front-bottom-right
+        1.0f, 0.0f, 0.0f,    // Back-bottom-right
+        1.0f, 1.0f, 1.0f,      // Front-top-right
+        1.0f, 1.0f, 0.0f,     // Back-top-right
+        0.0f, 1.0f, 1.0f,     // Front-top-left
+        0.0f, 1.0f, 0.0f,    // Back-top-left
+        0.0f, 0.0f, 1.0f,    // Front-bottom-left
+        0.0f, 0.0f, 0.0f,   // Back-bottom-left
+        1.0f, 0.0f, 0.0f,    // Back-bottom-right
+        0.0f, 1.0f, 0.0f,    // Back-top-left
+        1.0f, 1.0f, 0.0f      // Back-top-right
+    };
+    
     program.Load(vertexSrc, fragSrc);
 
 	glGenVertexArrays(1, &cube);
     glBindVertexArray(cube);
 
-	GLuint VBO;
+
+    GLuint VBO;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(cube_strip), cube_strip, GL_STATIC_DRAW);
-
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glBindVertexArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+
+    glBindVertexArray(0);
+
 
     program.Activate();
     program.setMat4("P", perspective);

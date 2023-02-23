@@ -32,12 +32,12 @@ INC_PATH= includes
 
 
 #framework
-FRAMEWORK= -lglfw -l dl
+FRAMEWORK= -lglfw -l dl -lfreetype
 FRAMEWORK_INC = libraries/includes
 
 INC= $(INC_PATH)/*
 
-NAME_SRC= main.cpp application.cpp shader.cpp mat4.cpp control.cpp skeleton.cpp object.cpp cubemap.cpp animation.cpp
+NAME_SRC= main.cpp application.cpp shader.cpp mat4.cpp control.cpp skeleton.cpp object.cpp cubemap.cpp menu.cpp textdisplay.cpp animation.cpp
 			
 
 NAME_SRC_C= glad.c \

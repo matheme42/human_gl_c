@@ -12,6 +12,17 @@ mat4    perspective(float fov, float ratio, float near, float far) {
     });
 }
 
+mat4  ortho(float left, float right, float bottom, float top) {
+		mat4 Result(1.0f);
+		Result[0][0] = 2.0f / (right - left);
+		Result[1][1] = 2.0f / (top - bottom);
+		Result[2][2] = - 1.0f;
+		Result[3][0] = - (right + left) / (right - left);
+		Result[3][1] = - (top + bottom) / (top - bottom);
+		return Result.transpose();
+}
+
+
 mat4    rotation(float angle, vec3 vector) {
     float c = cosf(RADIAN(angle));
     float s = sinf(RADIAN(angle));

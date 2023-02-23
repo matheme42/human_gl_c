@@ -13,7 +13,7 @@ void Control::init(GLFWwindow *window) {
 void Control::window_size_callback(GLFWwindow* window, int width, int height) {
 	static Control *control = (Control*)glfwGetWindowUserPointer(window);
 	glfwGetFramebufferSize(window, &width, &height);
-    control->onPerspectiveChange(perspective(60, (float)width / (float)height, 0.1f, 100.0f));
+    control->onWindowChange(width, height);
 	glViewport(0, 0, width, height);
 }
 
@@ -22,10 +22,13 @@ void Control::key_callback(GLFWwindow* window, int key, int scancode, int action
     if (key == GLFW_KEY_LEFT_ALT) {
         if (action == GLFW_PRESS) {
             control->pause = true;
+            control->onPauseChange(control->pause);
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         } else {
             control->pause = false;
+            control->onPauseChange(control->pause);
         	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            glfwSetCursor(window, NULL);
         }
     }
 }
@@ -64,9 +67,9 @@ void Control::cursor_position_callback(GLFWwindow* window, double xpos, double y
     if (control->pause) {
         mousePos[0] = xpos;
         mousePos[1] = ypos;
+        control->onPauseCursorPosition(xpos, ypos);
         return ;
     }
-
 	static float Pitch = -45.0f;
 	static float Yaw = 10.0f;
 
@@ -90,5 +93,10 @@ void Control::cursor_position_callback(GLFWwindow* window, double xpos, double y
 }
 
 void Control::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+    static Control *control = (Control*)glfwGetWindowUserPointer(window);
 
+    if (control->pause) {
+        control->onPauseCursorClick(button, action);
+        return ;
+    }
 }

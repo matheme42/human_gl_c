@@ -14,8 +14,12 @@ class Control {
 
     void init(GLFWwindow *window);
     void getKeyboardEvent(GLFWwindow* window);
-    std::function<void(mat4)> onPerspectiveChange;
+    std::function<void(float, float)> onWindowChange;
     std::function<void(mat4)> onViewChange;
+    std::function<void(bool)> onPauseChange;
+    std::function<void(float, float)> onPauseCursorPosition;
+    std::function<void(int, int)> onPauseCursorClick;
+
 
     private:
         static void window_size_callback(GLFWwindow* window, int width, int height);
