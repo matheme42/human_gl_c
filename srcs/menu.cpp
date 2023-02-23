@@ -67,6 +67,11 @@ void Menu::draw() {
     drawButton(vec2({butonSizeWidth, 70.0f}), vec2({width * 0.5f - butonSizeWidth * 0.5f, height / 6.0f - 35.0f}), vec4({0.7f, 0.7f, 0.7f, 1.0f}), "Run");
     drawButton(vec2({butonSizeWidth, 70.0f}), vec2({width * 0.5f - butonSizeWidth * 0.5f, height / 3.0f + height / 6.0f - 35.0f}), vec4({0.7f, 0.7f, 0.7f, 1.0f}), "Walk");
     drawButton(vec2({butonSizeWidth, 70.0f}), vec2({width * 0.5f - butonSizeWidth * 0.5f, 2.0f * height / 3.0f + height / 6.0f - 35.0f}), vec4({0.7f, 0.7f, 0.7f, 1.0f}), "Jump");
+
+    text.display("Walk", 0.0f, 0.0f, 0.001f, vec3({1.0, 1.0f, 1.0f}));
+    text.display("Jump", 0.0f, -0.65f, 0.001f, vec3({1.0, 1.0f, 1.0f}));
+    text.display("Run", 0.0f, 0.65f, 0.001f, vec3({1.0, 1.0f, 1.0f}));
+
 }
 
 
@@ -98,7 +103,6 @@ void Menu::drawButton(vec2 size, vec2 pos, vec4 color, std::string textString) {
     glBindVertexArray(0);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
-    text.display(textString, -1.0f + (2 * pos[0] - size[0] * 0.5) / this->width, -1.0f + (2 * pos[1] - size[1] * 0.5) / this->height, 0.001f, vec3({1.0, 1.0f, 1.0f}));
 }
 
 
