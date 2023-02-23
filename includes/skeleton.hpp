@@ -4,33 +4,9 @@
 #include "Vector.hpp"
 #include "mat4.hpp"
 #include <vector>
+#include "animation.hpp"
 
 enum BONEID { HIP, HEAD, TORSO, L_H_LEG, L_L_LEG, R_H_LEG, R_L_LEG, L_H_ARM, L_L_ARM, R_H_ARM, R_L_ARM, BONE_NUMDER };
-
-
-template< size_t _size >
-struct AnimFrame {
-
-    AnimFrame() {
-        Clean();
-    }
-
-    std::array<mat4, _size> matrices;
-    
-
-    AnimFrame &Set(unsigned ID, mat4 matrix) {
-        matrices[ID] = matrix;
-        return (*this);
-    }
-
-    AnimFrame &Clean() {
-        mat4 tmp(1);
-
-        for (unsigned n = 0; n < _size; n++)
-            matrices[n] = tmp;
-        return (*this);
-    }
-};
 
 class Bone
 {
@@ -74,6 +50,10 @@ class Bone
         return (ID);
     }
 
+    Bone* GetParent() const {
+        return (parent);
+    }
+
     Bone &SetLocalMatrix(mat4 localMatrix) {
         this->localMatrix = localMatrix;
         return (*this);
@@ -97,7 +77,15 @@ class Bone
 
     template< size_t _size >
     void ComputeAnimFinalMatrix(AnimFrame<_size> &frame) {
+
+
+
         finalMatrix = (parent != 0) ? parent->finalMatrix * localMatrix * frame.matrices[ID] : localMatrix * frame.matrices[ID];
+
+       /* if (ID == 0) {
+            std::cout << finalMatrix << std::endl;
+            return ;
+        }*/
         for (Bone* bone : childs)
             bone->ComputeAnimFinalMatrix(frame);
     }
@@ -114,7 +102,7 @@ class Skeleton
 
     Skeleton();
     
-    Bone GetBone(unsigned id);
+    Bone &GetBone(unsigned id);
 
     void ComputeLocalMatrix();
 

@@ -1,5 +1,8 @@
 #include "object.hpp"
 
+Animation<BONE_NUMDER> walking();
+Animation<BONE_NUMDER> jump();
+
 void Object::init(mat4 perspective, mat4 lookAt) {
 	const GLfloat cube_strip[] = {
     0.0f, 1.0f, 1.0f,     // Front-top-left
@@ -35,14 +38,11 @@ void Object::init(mat4 perspective, mat4 lookAt) {
     program.Activate();
     program.setMat4("P", perspective);
 	program.setMat4("V", lookAt);
-    program.setMat4("M", translate(vec3({0, 0, 5.0f})) * rotate(mat4(1), rot, vec3({0, 1, 0})));
+
+    anim = jump();
+    anim.Loop();
 }
 
-void Object::rotation() {
-    rot += 0.02f;
-    program.Activate();
-    program.setMat4("M", translate(vec3({0, 0, 5.0f})) * rotate(mat4(1), rot, vec3({0, 1, 0})));
-}
 
 void Object::setView(mat4 lookAt4) {
     program.Activate();
@@ -57,13 +57,13 @@ void Object::setPerspective(mat4 perspective4) {
 
 
 void Object::draw() {
-    mat4 model;
-
+    anim.Uptdate();
+    skeleton.GetBone(HIP).ComputeAnimFinalMatrix(anim.currentFrame);
+    
     program.Activate();
     glBindVertexArray(cube);
-    model = translate(vec3({ 0, 0, 5.0f })) * rotate(mat4(1), rot, vec3({ 0, 1, 0 }));
     for (unsigned n = 1; n < BONE_NUMDER; n++) {
-        program.setMat4("M", model * skeleton.GetBone(n).ModelMatrix());
+        program.setMat4("M", skeleton.GetBone(n).ModelMatrix());
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 14);	
     }
 }

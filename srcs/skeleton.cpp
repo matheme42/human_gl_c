@@ -2,6 +2,7 @@
 
 std::ostream& operator<<(std::ostream& os, const Bone &bone) {
     os << "Bone     : " << bone.GetID() << std::endl;
+    os << "Parent     : " << bone.GetParent() << std::endl;
     os << "scale    : " << bone.size << std::endl;
     os << "scaleMatrix  : " << std::endl << bone.scaleMatrix << std::endl;
     os << "localMatrix  : " << std::endl << bone.localMatrix << std::endl;
@@ -48,21 +49,8 @@ void Skeleton::ComputeLocalMatrix() {
 Skeleton::Skeleton() {
     BuildSkeleton();
     ComputeLocalMatrix();
-    AnimFrame<BONE_NUMDER> frame;
-
-    frame.Set(TORSO,    rotation(-25, vec3({ 1, 0, 0 })))
-        .Set(HIP,       rotation(50, vec3({ 1, 0, 0 })))
-        .Set(HEAD,      rotation(25, vec3({ 1, 0, 0 })))
-        .Set(L_H_ARM,   rotation(25, vec3({ 1, 0, 0 })))
-        .Set(L_L_ARM,   rotation(25, vec3({ 1, 0, 0 })))
-        .Set(R_H_ARM,   rotation(-25, vec3({1, 0, 0})))
-        .Set(R_L_ARM,   rotation(-25, vec3({ 1, 0, 0 })));
-
-    bones[HIP].ComputeAnimFinalMatrix(frame);
-
-//    std::cout << bones[R_L_ARM] << std::endl;
 };
 
-Bone Skeleton::GetBone(unsigned id) {
+Bone& Skeleton::GetBone(unsigned id) {
     return bones[id];
 }

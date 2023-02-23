@@ -7,7 +7,7 @@ void Control::init(GLFWwindow *window) {
 	glfwSetCursorPosCallback(window, cursor_position_callback);
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
 	look = vec3({0, 0, 1});
-    position = vec3({0, 0, 0});
+    position = vec3({0, 0, -7});
 }
 
 void Control::window_size_callback(GLFWwindow* window, int width, int height) {

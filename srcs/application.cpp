@@ -70,7 +70,6 @@ void Application::start() {
 		control.getKeyboardEvent(window);
 		cubemap.draw();
 		object.draw();
-		object.rotation();
 		glfwSwapBuffers(window);
 	}
 }

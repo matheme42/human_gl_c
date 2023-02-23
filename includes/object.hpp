@@ -4,6 +4,7 @@
 #include "shader.hpp"
 #include "mat4.hpp"
 #include "skeleton.hpp"
+#include "animation.hpp"
 
 class Object {
     #define fragSrc "shader/fs.glsl"
@@ -12,15 +13,12 @@ class Object {
     Shader      program;
     GLuint      cube;
     Skeleton    skeleton;
-
-    float       rot = 0.0f;
+    Animation<BONE_NUMDER> anim;
 
     public:
         void init(mat4 perspective, mat4 lookAt);
         void draw();
-
-        void rotation();
-
+        
         void setView(mat4 lookAt4);
         void setPerspective(mat4 perspective4);
 };
