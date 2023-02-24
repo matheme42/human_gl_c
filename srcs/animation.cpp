@@ -3,102 +3,72 @@
 
 
 Animation<BONE_NUMDER> walking() {
-    
-    Animation<BONE_NUMDER> anim;
-
-    AnimFrame<BONE_NUMDER> frame, start;
-
-    start.Clean().SetTime(0)
-        .Set(R_H_ARM,       vec3({ 25, 0, 0 }),     vec3(0))
-        .Set(R_L_ARM,       vec3({ 20, 0, 0 }),     vec3(0))
-        .Set(L_H_ARM,       vec3({ -20, 0, 0 }),     vec3(0))
-        .Set(L_L_ARM,       vec3({ 10, 0, 0 }),     vec3(0))
-        .Set(L_H_LEG,       vec3({ 10, 0, 0 }),     vec3(0))
-        .Set(L_L_LEG,       vec3({ -15, 0, 0 }),     vec3(0))
-        .Set(R_H_LEG,       vec3({ -10, 0, 0 }),     vec3(0))
-        .Set(R_L_LEG,       vec3({ -5, 0, 0 }),     vec3(0));
-    
-    return anim.AddFrame(start)
-    .AddFrame(frame.Clean().SetTime(1)
-        .Set(R_H_ARM,       vec3({ 10, 0, 0 }),     vec3(0))
+    return Animation<BONE_NUMDER>().AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(0.0f)
+        .Set(R_H_ARM,       vec3({ 20, 0, 0 }),     vec3(0))
         .Set(R_L_ARM,       vec3({ 10, 0, 0 }),     vec3(0))
-        .Set(L_H_LEG,       vec3({ 15, 0, 0 }),     vec3(0))
-        .Set(L_L_LEG,       vec3({ -10, 0, 0 }),     vec3(0))
-        .Set(L_H_ARM,       vec3({ 10, 0, 0 }),     vec3(0))
+        .Set(L_H_ARM,       vec3({ -15, 0, 0 }),     vec3(0))
+        .Set(L_H_LEG,       vec3({ 30, 0, 0 }),     vec3(0))
+        .Set(L_L_LEG,       vec3({ -20, 0, 0 }),    vec3(0))
+        .Set(R_H_LEG,       vec3({ -15, 0, 0 }),     vec3(0))
+    )
+    .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(1.0f)
+        .Set(L_H_ARM,       vec3({ 20, 0, 0 }),     vec3(0))
         .Set(L_L_ARM,       vec3({ 10, 0, 0 }),     vec3(0))
-        .Set(R_H_LEG,       vec3({ -5, 0, 0 }),     vec3(0))
-        .Set(R_L_LEG,       vec3({ -10, 0, 0 }),     vec3(0))
-        .Set(HIP,       vec3(0),     vec3({ 0, -0.2f, 0 }))
-    
+        .Set(R_H_ARM,       vec3({ -15, 0, 0 }),     vec3(0))
+        .Set(R_H_LEG,       vec3({ 30, 0, 0 }), vec3(0))
+        .Set(R_L_LEG,       vec3({ -20, 0, 0 }),     vec3(0))
+        .Set(L_H_LEG,       vec3({ -15, 0, 0 }),     vec3(0))
     )
-    .AddFrame(frame.Clean().SetTime(2)
-        .Set(L_H_ARM,       vec3({ 25, 0, 0 }),     vec3(0))
-        .Set(L_L_ARM,       vec3({ 20, 0, 0 }),     vec3(0))
-        .Set(R_H_ARM,       vec3({ -20, 0, 0 }),     vec3(0))
-        .Set(R_L_LEG,       vec3({ 10, 0, 0 }),     vec3(0))
-        .Set(R_H_LEG,       vec3({ 40, 0, 0 }),     vec3(0))
-        .Set(R_L_LEG,       vec3({ -15, 0, 0 }),     vec3(0))
-        .Set(L_H_LEG,       vec3({ -10, 0, 0 }),     vec3(0))
-        .Set(L_L_LEG,       vec3({ 5, 0, 0 }),     vec3(0))
-    )
-    .AddFrame(start.SetTime(4));
+    .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(2.0f)
+        .Set(R_H_ARM, vec3({ 20, 0, 0 }), vec3(0))
+        .Set(R_L_ARM, vec3({ 10, 0, 0 }), vec3(0))
+        .Set(L_H_ARM, vec3({ -15, 0, 0 }), vec3(0))
+        .Set(L_H_LEG, vec3({ 30, 0, 0 }), vec3(0))
+        .Set(L_L_LEG, vec3({ -20, 0, 0 }), vec3(0))
+        .Set(R_H_LEG, vec3({ -15, 0, 0 }), vec3(0))
+    );
 }
 
 Animation<BONE_NUMDER> jump() {
-    
-    Animation<BONE_NUMDER> anim;
+    return Animation<BONE_NUMDER>().AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(0))
+        .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(1)
+            .Set(TORSO, vec3({ 30, 0, 0 }), vec3(0))
+            .Set(L_H_LEG, vec3({ 75, 0, 0 }), vec3(0))
+            .Set(L_L_LEG, vec3({ -95, 0, 0 }), vec3(0))
+            .Set(R_H_LEG, vec3({ 75, 0, 0 }), vec3(0))
+            .Set(R_L_LEG, vec3({ -95, 0, 0 }), vec3(0))
+            .Set(L_H_ARM, vec3({ 20, 0, 0 }), vec3(0))
+            .Set(L_L_ARM, vec3({ 30, 0, 0 }), vec3(0))
+            .Set(R_H_ARM, vec3({ 20, 0, 0 }), vec3(0))
+            .Set(R_L_ARM, vec3({ 30, 0, 0 }), vec3(0))
+            .Set(HIP, vec3(0), vec3({ 0, -1.5f, 0 }))
 
-    AnimFrame<BONE_NUMDER> frame, start;
+        )
+        .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(1.2f)
+            .Set(L_H_LEG, vec3({ 20, 0, 0 }), vec3(0))
+            .Set(L_L_LEG, vec3({ -30, 0, 0 }), vec3(0))
+            .Set(R_H_LEG, vec3({ 20, 0, 0 }), vec3(0))
+            .Set(R_L_LEG, vec3({ -20, 0, 0 }), vec3(0))
+            .Set(L_H_ARM, vec3({ 170, 0, 0 }), vec3(0))
+            .Set(L_L_ARM, vec3({ 20, 0, 0 }), vec3(0))
+            .Set(R_H_ARM, vec3({ 170, 0, 0 }), vec3(0))
+            .Set(R_L_ARM, vec3({ 20, 0, 0 }), vec3(0))
+            .Set(HIP, vec3(0), vec3({ 0, 1.0f, 0 }))
+        )
+        .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(1.4f)
+            .Set(L_H_ARM, vec3({ 20, 0, 0 }), vec3(0))
+            .Set(L_L_ARM, vec3({ 30, 0, 0 }), vec3(0))
+            .Set(R_H_ARM, vec3({ 20, 0, 0 }), vec3(0))
+            .Set(R_L_ARM, vec3({ 30, 0, 0 }), vec3(0))
+            .Set(HIP, vec3(0), vec3({ 0, 0.6f, 0 }))
 
-    start.Clean().SetTime(0);
-    
-    return anim.AddFrame(start)
-    .AddFrame(frame.Clean().SetTime(1)
-        .Set(TORSO,     vec3({ 30, 0, 0 }),     vec3(0))
-        .Set(L_H_LEG,   vec3({ 75, 0, 0 }),     vec3(0))
-        .Set(L_L_LEG,   vec3({ -95, 0, 0 }),    vec3(0))
-        .Set(R_H_LEG,   vec3({ 75, 0, 0 }),     vec3(0))
-        .Set(R_L_LEG,   vec3({ -95, 0, 0 }),    vec3(0))
-        .Set(L_H_ARM,   vec3({ 20, 0, 0 }),     vec3(0))
-        .Set(L_L_ARM,   vec3({ 30, 0, 0 }),    vec3(0))
-        .Set(R_H_ARM,   vec3({ 20, 0, 0 }),     vec3(0))
-        .Set(R_L_ARM,   vec3({ 30, 0, 0 }),    vec3(0))
-        .Set(HIP,       vec3(0), vec3({ 0, -1.5f, 0 }))
-    
-    )
-
-        .AddFrame(frame.Clean().SetTime(1.2)
-        .Set(L_H_LEG,   vec3({ 20, 0, 0 }),     vec3(0))
-        .Set(L_L_LEG,   vec3({ -30, 0, 0 }),    vec3(0))
-        .Set(R_H_LEG,   vec3({ 20, 0, 0 }),     vec3(0))
-        .Set(R_L_LEG,   vec3({ -20, 0, 0 }),    vec3(0))
-        .Set(L_H_ARM,   vec3({ 170, 0, 0 }),     vec3(0))
-        .Set(L_L_ARM,   vec3({ 20, 0, 0 }),    vec3(0))
-        .Set(R_H_ARM,   vec3({ 170, 0, 0 }),     vec3(0))
-        .Set(R_L_ARM,   vec3({ 20, 0, 0 }),    vec3(0))
-        .Set(HIP,       vec3(0), vec3({ 0, 1.0f, 0 }))
-    )
-    .AddFrame(frame.Clean().SetTime(1.4)
-        .Set(L_H_ARM,   vec3({ 20, 0, 0 }),     vec3(0))
-        .Set(L_L_ARM,   vec3({ 30, 0, 0 }),    vec3(0))
-        .Set(R_H_ARM,   vec3({ 20, 0, 0 }),     vec3(0))
-        .Set(R_L_ARM,   vec3({ 30, 0, 0 }),    vec3(0))
-        .Set(HIP,       vec3(0), vec3({ 0, 0.6f, 0 }))
-    
-    )
-    .AddFrame(start.SetTime(1.6));
+        )
+        .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(1.6f));
 }
 
 Animation<BONE_NUMDER> flip() {
-    
-    Animation<BONE_NUMDER> anim;
-
-    AnimFrame<BONE_NUMDER> frame, start;
-
-    start.Clean().SetTime(0);
-    
-    return anim.AddFrame(start)
-    .AddFrame(frame.Clean().SetTime(1)
+    return Animation<BONE_NUMDER>().AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(0))
+    .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(1)
         .Set(TORSO,     vec3({ 30, 0, 0 }),     vec3(0))
         .Set(L_H_LEG,   vec3({ 75, 0, 0 }),     vec3(0))
         .Set(L_L_LEG,   vec3({ -95, 0, 0 }),    vec3(0))
@@ -112,7 +82,7 @@ Animation<BONE_NUMDER> flip() {
     
     )
 
-        .AddFrame(frame.Clean().SetTime(1.6)
+        .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(1.6f)
         .Set(L_H_LEG,   vec3({ 20, 0, 0 }),     vec3(0))
         .Set(L_L_LEG,   vec3({ -30, 0, 0 }),    vec3(0))
         .Set(R_H_LEG,   vec3({ 20, 0, 0 }),     vec3(0))
@@ -123,7 +93,7 @@ Animation<BONE_NUMDER> flip() {
         .Set(R_L_ARM,   vec3({ 20, 0, 0 }),    vec3(0))
         .Set(HIP,       vec3({220, 0, 0}), vec3({ 0, 1.0f, 0 }))
     )
-    .AddFrame(frame.Clean().SetTime(2.0f)
+    .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(2.0f)
         .Set(L_H_ARM,   vec3({ 20, 0, 0 }),     vec3(0))
         .Set(L_L_ARM,   vec3({ 30, 0, 0 }),    vec3(0))
         .Set(R_H_ARM,   vec3({ 20, 0, 0 }),     vec3(0))
@@ -131,7 +101,7 @@ Animation<BONE_NUMDER> flip() {
         .Set(HIP,       vec3({359, 0, 0}), vec3({ 0, 0.6f, 0 }))
     
     )
-    .AddFrame(frame.Clean().SetTime(2.0f)
+    .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(2.0f)
         .Set(L_H_ARM,   vec3({ 20, 0, 0 }),     vec3(0))
         .Set(L_L_ARM,   vec3({ 30, 0, 0 }),    vec3(0))
         .Set(R_H_ARM,   vec3({ 20, 0, 0 }),     vec3(0))
@@ -139,25 +109,19 @@ Animation<BONE_NUMDER> flip() {
         .Set(HIP,       vec3({0, 0, 0}), vec3({ 0, 0.6f, 0 }))
     
     )
-    .AddFrame(start.SetTime(2.5));
+    .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(2.5f));
 }
 
 Animation<BONE_NUMDER> put() {
-    
-    Animation<BONE_NUMDER> anim;
+    return Animation<BONE_NUMDER>().AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(0)
+        .Set(TORSO, vec3({ 0, 0, 0 }), vec3(0))
+        .Set(L_H_ARM, vec3({ -30, 0, 0 }), vec3(0))
+        .Set(R_H_ARM, vec3({ 20, 0, 0 }), vec3(0))
+        .Set(L_L_ARM, vec3({ 30, 0, 0 }), vec3(0))
+        .Set(R_L_ARM, vec3({ 20, 0, 0 }), vec3(0))
+    )
 
-    AnimFrame<BONE_NUMDER> frame, start;
-
-    start.Clean().SetTime(0)
-        .Set(TORSO,       vec3({0, 0, 0}), vec3(0))
-        .Set(L_H_ARM,       vec3({-30, 0, 0}), vec3(0))
-        .Set(R_H_ARM,       vec3({20, 0, 0}), vec3(0))
-        .Set(L_L_ARM,       vec3({30, 0, 0}), vec3(0))
-        .Set(R_L_ARM,       vec3({20, 0, 0}), vec3(0));
-    
-    return anim.AddFrame(start)
-
-        .AddFrame(frame.Clean().SetTime(2)
+        .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(2)
         .Set(TORSO,       vec3({0, 20, 0}), vec3(0))
         .Set(L_H_ARM,       vec3({20, 0, 0}), vec3(0))
         .Set(R_H_ARM,       vec3({-20, 0, 0}), vec3(0))
@@ -165,51 +129,56 @@ Animation<BONE_NUMDER> put() {
         .Set(R_L_ARM,       vec3({15, 0, 0}), vec3(0))
     )
 
-    .AddFrame(frame.Clean().SetTime(4)
+    .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(4)
         .Set(TORSO,       vec3({0, 0, 0}), vec3(0))
         .Set(L_H_ARM,       vec3({-20, 0, 0}), vec3(0))
         .Set(R_H_ARM,       vec3({20, 0, 0}), vec3(0))
         .Set(L_L_ARM,       vec3({15, 0, 0}), vec3(0))
         .Set(R_L_ARM,       vec3({15, 0, 0}), vec3(0))
     )
-    .AddFrame(frame.Clean().SetTime(6)
+    .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(6)
         .Set(TORSO,       vec3({0, -20, 0}), vec3(0))
         .Set(L_H_ARM,       vec3({20, 0, 0}), vec3(0))
         .Set(R_H_ARM,       vec3({-20, 0, 0}), vec3(0))
         .Set(L_L_ARM,       vec3({15, 0, 0}), vec3(0))
         .Set(R_L_ARM,       vec3({15, 0, 0}), vec3(0))
     )
-    .AddFrame(start.SetTime(8));
+    .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(8)
+        .Set(TORSO, vec3({ 0, 0, 0 }), vec3(0))
+        .Set(L_H_ARM, vec3({ -30, 0, 0 }), vec3(0))
+        .Set(R_H_ARM, vec3({ 20, 0, 0 }), vec3(0))
+        .Set(L_L_ARM, vec3({ 30, 0, 0 }), vec3(0))
+        .Set(R_L_ARM, vec3({ 20, 0, 0 }), vec3(0)));
 }
 
 Animation<BONE_NUMDER> hand() {
-    
-    Animation<BONE_NUMDER> anim;
-
-    AnimFrame<BONE_NUMDER> frame, start;
-
-    start.Clean().SetTime(0).Set(R_H_ARM,       vec3({25, 0, 0}), vec3(0))
-        .Set(R_L_ARM,       vec3({100, 0, 0}), vec3(0))
-        .Set(L_H_ARM,       vec3({120, 0, 0}), vec3(0))
-        .Set(R_HAND,       vec3({20, 0, 0}), vec3(0))
-        .Set(HEAD,       vec3({0, 0, 360}), vec3(0));
-    
-    return anim.AddFrame(start)
-    .AddFrame(frame.Clean().SetTime(0.5f)
+    return Animation<BONE_NUMDER>().AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(0)
+        .Set(R_H_ARM, vec3({25, 0, 0}), vec3(0))
+        .Set(R_L_ARM, vec3({ 100, 0, 0 }), vec3(0))
+        .Set(L_H_ARM, vec3({ 120, 0, 0 }), vec3(0))
+        .Set(R_HAND, vec3({ 20, 0, 0 }), vec3(0))
+        .Set(HEAD, vec3({ 0, 0, 359}), vec3(0))
+    )
+    .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(0.5f)
         .Set(R_H_ARM,       vec3({25, 0, 0}), vec3(0))
         .Set(R_L_ARM,       vec3({100, 0, 10}), vec3(0))
         .Set(L_H_ARM,       vec3({120, 0, 0}), vec3(0))
         .Set(R_HAND,       vec3({20, 0, 20}), vec3(0))
-        .Set(HEAD,       vec3({0, 0, -360}), vec3(40))
+        .Set(HEAD,       vec3({0, 0, -359}), vec3(40))
         .Set(TORSO,       vec3(0), vec3({0, 1, 0}))
     )
-
-    .AddFrame(frame.Clean().SetTime(1.0f)
+    .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(1.0f)
         .Set(R_H_ARM,       vec3({25, 0, 0}), vec3(0))
         .Set(R_L_ARM,       vec3({100, 0, -10}), vec3(0))
         .Set(L_H_ARM,       vec3({120, 0, 0}), vec3(0))
         .Set(R_HAND,       vec3({20, 0, -20}), vec3(0))
-        .Set(HEAD,       vec3({0, 0, -360}), vec3(0))
+        .Set(HEAD,       vec3({0, 0, -359}), vec3(0))
     )
-    .AddFrame(start.SetTime(1.5f));
+    .AddFrame(AnimFrame<BONE_NUMDER>().Clean().SetTime(1.5f)
+        .Set(R_H_ARM, vec3({ 25, 0, 0 }), vec3(0))
+        .Set(R_L_ARM, vec3({ 100, 0, 0 }), vec3(0))
+        .Set(L_H_ARM, vec3({ 120, 0, 0 }), vec3(0))
+        .Set(R_HAND, vec3({ 20, 0, 0 }), vec3(0))
+        .Set(HEAD, vec3({ 0, 0, 359 }), vec3(0))
+    );
 }

@@ -6,8 +6,8 @@ void Control::init(GLFWwindow *window) {
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetCursorPosCallback(window, cursor_position_callback);
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
-	look = vec3({0, 0, 1});
-    position = vec3({0, 0, -7});
+	look = vec3({0, 0, -1});
+    position = vec3({0, 0, 7});
 }
 
 void Control::window_size_callback(GLFWwindow* window, int width, int height) {
@@ -70,8 +70,8 @@ void Control::cursor_position_callback(GLFWwindow* window, double xpos, double y
         control->onPauseCursorPosition(xpos, ypos);
         return ;
     }
-	static float Pitch = -45.0f;
-	static float Yaw = 10.0f;
+	static float Pitch = 0.0f;
+	static float Yaw = -140.0f;
 
 	Pitch += (float)(ypos - mousePos[1]) * 0.1;
     Yaw += (float)(xpos - mousePos[0]) * 0.1;

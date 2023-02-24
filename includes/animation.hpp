@@ -49,7 +49,7 @@ AnimFrame<_size> lerp(AnimFrame<_size> &frame1, AnimFrame<_size> &frame2, float 
         result.rotation[n] = lerp(frame1.rotation[n], frame2.rotation[n], ratio);
         result.translation[n] = lerp(frame1.translation[n], frame2.translation[n], ratio);
     }
-    result.time = frame1.time * ratio + frame2.time * (1.0 - ratio);
+    result.time = frame1.time * ratio + frame2.time * (1.0f - ratio);
     return result;
 }
 
@@ -81,12 +81,12 @@ public:
         loop = false;
     }
 
-    Animation &AddFrame(AnimFrame<_bone_number> &frame) {
+    Animation &AddFrame(AnimFrame<_bone_number> frame) {
         if (frame.time > animationTime)
             animationTime = frame.time;
 
         frames.push_back(frame);
-        std::sort(frames.begin(), frames.end(), [](AnimFrame<_bone_number> &f1, AnimFrame<_bone_number> &f2) {
+        std::sort(frames.begin(), frames.end(), [](AnimFrame<_bone_number>& f1, AnimFrame<_bone_number>& f2) {
             return (f1.time < f2.time);
         });
         return(*this);
@@ -114,19 +114,21 @@ public:
         float ratio;
         float time;
 
-        time = glfwGetTime() - startTime;
+        time = (float)glfwGetTime() - startTime;
         if (time > animationTime) {
             if (!loop)
                 return ;
-            startTime = glfwGetTime();
+            startTime = (float)glfwGetTime();
             time = 0;
         }
 
         n = 0;
-        while (n < frames.size() - 1 && frames[n + 1].time <= time)
+        while (n < frames.size() - 2 && frames[n + 1].time < time)
             n++;
 
         ratio = (time - frames[n].time) / (frames[n + 1].time - frames[n].time);
+        if (ratio < 0)
+            ratio = 0;
         currentFrame = lerp(frames[n], frames[n + 1], ratio);
     }
 
