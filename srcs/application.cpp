@@ -105,4 +105,5 @@ void Application::start() {
 		menu.draw();
 		glfwSwapBuffers(window);
 	}
+	glfwDestroyWindow(window);
 }
