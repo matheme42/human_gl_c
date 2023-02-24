@@ -106,4 +106,5 @@ void Application::start() {
 		glfwSwapBuffers(window);
 	}
 	glfwDestroyWindow(window);
+	glfwTerminate();
 }
